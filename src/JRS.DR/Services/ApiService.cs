@@ -30,46 +30,61 @@ namespace JRS.DR.Services
             {
                 Languages = Mapper.Map<List<LanguageResponse>>(languages)
             };
+
             return response;
         }
 
-        public GetObjectiveTypesResponse GetObjectiveTypes()
+        public GetObjectiveTypesResponse GetObjectiveTypes(GetObjectiveTypesRequest input)
         {
-            var objectiveTypes = _objectiveTypeRepository.GetAll();
+            new ApiServiceValidator().ValidateGetObjectiveTypes(input);
+
+            var objectiveTypes = _objectiveTypeRepository.GetMany(x => x.Language.Id == input.LanguageId.Value);
             var response = new GetObjectiveTypesResponse
             {
                 ObjectiveTypes = Mapper.Map<IList<ObjectiveTypeResponse>>(objectiveTypes)
             };
+
             return response;
         }
 
         public GetObjectivesResponse GetObjectives(GetObjectivesRequest input)
         {
             new ApiServiceValidator().ValidateGetObjectives(input);
-            var objectives = _objectiveRepository.GetAll();
+
+            var objectives = _objectiveRepository.GetMany(x =>
+                x.Language.Id == input.LanguageId.Value &&
+                input.XLeftTop.Value <= x.Location.X &&
+                x.Location.X <= input.XRightBottom.Value &&
+                input.YLeftTop <= x.Location.Y &&
+                x.Location.Y <= input.YRightBottom);
             var response = new GetObjectivesResponse
             {
                 Objectives = Mapper.Map<List<ObjectiveResponse>>(objectives)
             };
+
             return response;
         }
 
         public GetObjectiveResponse GetObjective(GetObjectiveRequest input)
         {
             new ApiServiceValidator().ValidateGetObjective(input);
+
             var objective = _objectiveRepository.Get(input.ObjectiveId.Value);
             var response = new GetObjectiveResponse
             {
                 Objective = Mapper.Map<ObjectiveResponse>(objective)
             };
+
             return response;
         }
 
         public GetObjectiveHtmlResponse GetObjectiveHtml(GetObjectiveHtmlRequest input)
         {
             new ApiServiceValidator().ValidateGetObjectiveHtml(input);
+
             var objective = _objectiveRepository.Get(input.ObjectiveId.Value);
             var response = Mapper.Map<GetObjectiveHtmlResponse>(objective);
+
             return response;
         }
     }

@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using JRS.DR.Contracts;
 using JRS.DR.DbContexts;
 using JRS.DR.Models.Common;
@@ -20,6 +22,19 @@ namespace JRS.DR.Repositories
 
             if (result?.IsDeleted ?? false)
                 return null;
+
+            return result;
+        }
+
+        public override IEnumerable<Objective> GetMany(Expression<Func<Objective, bool>> where)
+        {
+            var result = DbSet
+                .Include(x => x.Location)
+                .Include(x => x.Type)
+                .Where(where)
+                .ToList();
+
+            result = result.Where(x => !(x?.IsDeleted ?? false)).ToList();
 
             return result;
         }

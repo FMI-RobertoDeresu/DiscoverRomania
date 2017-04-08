@@ -36,11 +36,11 @@ namespace JRS.DR.Controllers
 
         [HttpPost("api/objectiveTypes")]
         [Produces(typeof(GetObjectiveTypesResponse))]
-        public IActionResult GetObjectiveTypes()
+        public IActionResult GetObjectiveTypes([FromBody] GetObjectiveTypesRequest request)
         {
-            return ApiCore<GetObjectiveTypesResponse>(ModelState, output =>
+            return ApiCore<GetObjectiveTypesRequest, GetObjectiveTypesResponse>(request, ModelState, (intput, output) =>
             {
-                var outputData = _apiService.GetObjectiveTypes();
+                var outputData = _apiService.GetObjectiveTypes(intput);
                 output = Mapper.Map(outputData, output);
             });
         }
@@ -81,9 +81,12 @@ namespace JRS.DR.Controllers
         //utils
         private IActionResult ApiCore<TInput, TOutput>(TInput input, ModelStateDictionary modelState,
             Action<TInput, TOutput> coreAction)
+            where TInput : new()
             where TOutput : ApiResponseBase, new()
         {
             var output = new TOutput();
+            if (input == null)
+                input = new TInput();
 
             try
             {

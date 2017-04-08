@@ -7,9 +7,23 @@ namespace JRS.DR.Validators
 {
     public class ApiServiceValidator
     {
+        public void ValidateGetObjectiveTypes(GetObjectiveTypesRequest input)
+        {
+            var errors = new List<string>();
+
+            if (!input.LanguageId.HasValue)
+                errors.Add($"Param not specified. Param name: {nameof(input.LanguageId)}");
+
+            if (errors.Any())
+                throw new ApiException(errors);
+        }
+
         public void ValidateGetObjectives(GetObjectivesRequest input)
         {
             var errors = new List<string>();
+
+            if (!input.LanguageId.HasValue)
+                errors.Add($"Param not specified. Param name: {nameof(input.LanguageId)}");
 
             if (!input.XLeftTop.HasValue)
                 errors.Add($"Param not specified. Param name: {nameof(input.XLeftTop)}");

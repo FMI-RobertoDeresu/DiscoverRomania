@@ -4,6 +4,8 @@ namespace JRS.DR.WsModels
 {
     public class GetObjectivesRequest
     {
+        public int? LanguageId { get; set; }
+
         public List<int> FilteredTypes { get; set; }
 
         public decimal? XLeftTop { get; set; }
