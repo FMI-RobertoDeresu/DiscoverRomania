@@ -20,26 +20,26 @@ namespace JRS.DR.Models.Common
             Html = html;
         }
 
-        public Language Language { get; protected set; }
+        public Language Language { get; set; }
 
-        public Location Location { get; protected set; }
+        public Location Location { get; set; }
 
-        public ObjectiveType Type { get; protected set; }
+        public ObjectiveType Type { get; set; }
 
         private string _status { get; set; }
 
         public ObjectiveStatus Status
         {
             get { return (ObjectiveStatus) Enum.Parse(typeof(ObjectiveStatus), _status, true); }
-            protected set { _status = value.ToString(); }
+            set { _status = value.ToString(); }
         }
 
-        public string Name { get; protected set; }
+        public string Name { get; set; }
 
-        public string Description { get; protected set; }
+        public string Description { get; set; }
 
-        public string Picture { get; protected set; }
+        public string Picture { get; set; }
 
-        public string Html { get; protected set; }
+        public string Html { get; set; }
     }
 }

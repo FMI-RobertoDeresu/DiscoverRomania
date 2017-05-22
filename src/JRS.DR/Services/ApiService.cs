@@ -1,9 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using AutoMapper;
 using JRS.DR.Contracts;
+using JRS.DR.Exceptions;
 using JRS.DR.Models.Common;
+using JRS.DR.Models.Enums;
 using JRS.DR.Validators;
 using JRS.DR.WsModels;
+using Language = JRS.DR.Models.Common.Language;
+using Location = JRS.DR.Models.Common.Location;
 
 namespace JRS.DR.Services
 {
@@ -47,24 +52,6 @@ namespace JRS.DR.Services
             return response;
         }
 
-        public GetObjectivesResponse GetObjectives(GetObjectivesRequest input)
-        {
-            new ApiServiceValidator().ValidateGetObjectives(input);
-
-            var objectives = _objectiveRepository.GetMany(x =>
-                x.Language.Id == input.LanguageId.Value &&
-                input.XLeftTop.Value <= x.Location.X &&
-                x.Location.X <= input.XRightBottom.Value &&
-                input.YLeftTop <= x.Location.Y &&
-                x.Location.Y <= input.YRightBottom);
-            var response = new GetObjectivesResponse
-            {
-                Objectives = Mapper.Map<List<ObjectiveResponse>>(objectives)
-            };
-
-            return response;
-        }
-
         public GetObjectiveResponse GetObjective(GetObjectiveRequest input)
         {
             new ApiServiceValidator().ValidateGetObjective(input);
@@ -78,6 +65,23 @@ namespace JRS.DR.Services
             return response;
         }
 
+        public GetObjectivesResponse GetObjectives(GetObjectivesRequest input)
+        {
+            new ApiServiceValidator().ValidateGetObjectives(input);
+
+            var objectives = _objectiveRepository.GetMany(x =>
+                x.Language.Id == input.LanguageId.Value &&
+                input.XLeftTop.Value <= x.Location.X && input.XRightBottom.Value >= x.Location.X &&
+                input.YLeftTop <= x.Location.Y && input.YRightBottom >= x.Location.Y);
+
+            var response = new GetObjectivesResponse
+            {
+                Objectives = Mapper.Map<List<ObjectiveResponse>>(objectives)
+            };
+
+            return response;
+        }
+
         public GetObjectiveHtmlResponse GetObjectiveHtml(GetObjectiveHtmlRequest input)
         {
             new ApiServiceValidator().ValidateGetObjectiveHtml(input);
@@ -86,6 +90,92 @@ namespace JRS.DR.Services
             var response = Mapper.Map<GetObjectiveHtmlResponse>(objective);
 
             return response;
+        }
+
+        public CreateObjectiveResponse CreateObjective(CreateObjectiveRequest input)
+        {
+            new ApiServiceValidator().ValidateCreateObjective(input);
+
+            var language = _languageRepository.Get(input.LanguageId.Value);
+
+            if (language == null)
+                throw new ApiException("Language does not exists!");
+
+            var objectiveType = _objectiveTypeRepository.Get(input.ObjectiveTypeId.Value);
+
+            if (objectiveType == null)
+                throw new ApiException("Objective type does not exists!");
+
+            if (objectiveType.Language != language)
+                throw new ApiException("Objective type has other language than requested language!");
+
+            var location = new Location(input.Location.X.Value, input.Location.Y.Value);
+            var status = ObjectiveStatus.Accepted;
+
+            var objective = new Objective(language, location, objectiveType, status,
+                input.Name, input.Description, input.Picture, input.Html);
+
+            location.PreInsert(); //TODO: temp way to fix CreatedAt
+            _objectiveRepository.Create(objective);
+            _objectiveRepository.SaveChanges();
+
+            return new CreateObjectiveResponse
+            {
+                ObjectiveId = objective.Id
+            };
+        }
+
+        public EditObjectiveResponse EditObjective(EditObjectiveRequest input)
+        {
+            new ApiServiceValidator().ValidateEditObjective(input);
+
+            var language = _languageRepository.Get(input.LanguageId.Value);
+
+            if (language == null)
+                throw new ApiException("Language does not exists!");
+
+            var objectiveType = _objectiveTypeRepository.Get(input.ObjectiveTypeId.Value);
+
+            if (objectiveType == null)
+                throw new ApiException("Objective type does not exists!");
+
+            if (objectiveType.Language != language)
+                throw new ApiException("Objective type has other language than requested language!");
+
+            var objective = _objectiveRepository.Get(input.ObjectiveId.Value);
+            if (objective == null)
+                throw new ApiException("Objective does not exists!");
+
+            objective.Language = language;
+            objective.Type = objectiveType;
+            objective.Name = input.Name;
+            objective.Description = input.Description;
+            objective.Picture = input.Picture;
+            objective.Html = input.Html;
+            objective.Location.X = input.Location.X.Value;
+            objective.Location.X = input.Location.Y.Value;
+
+            _objectiveRepository.Update(objective);
+            _objectiveRepository.SaveChanges();
+
+            return new EditObjectiveResponse
+            {
+                ObjectiveId = objective.Id
+            };
+        }
+
+        public DeleteObjectiveResponse DeleteObjective(DeleteObjectiveRequest input)
+        {
+            new ApiServiceValidator().ValidateDeleteObjective(input);
+
+            var objective = _objectiveRepository.Get(input.ObjectiveId.Value);
+            if (objective == null)
+                throw new Exception("Objective does not exists!");
+
+            _objectiveRepository.Delete(objective);
+            _objectiveRepository.SaveChanges();
+
+            return new DeleteObjectiveResponse();
         }
     }
 }

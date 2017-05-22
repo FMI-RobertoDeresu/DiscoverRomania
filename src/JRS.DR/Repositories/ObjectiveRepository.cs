@@ -15,38 +15,31 @@ namespace JRS.DR.Repositories
 
         public override Objective Get(int id)
         {
-            var result = DbSet
+            var result = QueryAll()
                 .Include(x => x.Location)
                 .Include(x => x.Type)
                 .FirstOrDefault(x => x.Id == id);
-
-            if (result?.IsDeleted ?? false)
-                return null;
 
             return result;
         }
 
         public override IEnumerable<Objective> GetMany(Expression<Func<Objective, bool>> where)
         {
-            var result = DbSet
+            var result = QueryAll()
                 .Include(x => x.Location)
                 .Include(x => x.Type)
                 .Where(where)
                 .ToList();
-
-            result = result.Where(x => !(x?.IsDeleted ?? false)).ToList();
 
             return result;
         }
 
         public override IEnumerable<Objective> GetAll()
         {
-            var result = DbSet
+            var result = QueryAll()
                 .Include(x => x.Location)
                 .Include(x => x.Type)
                 .ToList();
-
-            result = result.Where(x => !(x?.IsDeleted ?? false)).ToList();
 
             return result;
         }

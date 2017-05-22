@@ -13,6 +13,9 @@ namespace JRS.DR.Config
             CreateMap<GetObjectivesResponse, GetObjectivesResponse>();
             CreateMap<GetObjectiveResponse, GetObjectiveResponse>();
             CreateMap<GetObjectiveHtmlResponse, GetObjectiveHtmlResponse>();
+            CreateMap<CreateObjectiveResponse, CreateObjectiveResponse>();
+            CreateMap<EditObjectiveResponse, EditObjectiveResponse>();
+            CreateMap<DeleteObjectiveResponse, DeleteObjectiveResponse>();
         }
     }
 }

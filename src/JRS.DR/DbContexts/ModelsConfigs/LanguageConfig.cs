@@ -7,9 +7,9 @@ namespace JRS.DR.DbContexts.ModelsConfigs
     {
         public static void ConfigureLanguage(this ModelBuilder modelBuilder)
         {
-            var entityBuilder = modelBuilder.Entity<Language>();
-            entityBuilder.ToTable("Language");
-            entityBuilder.Ignore("Key").Property("_key").HasColumnName("Key");
+            modelBuilder.Entity<Language>().ToTable("Language").HasKey(x => x.Id);
+            modelBuilder.Entity<Language>().Property("_key").HasColumnName("Key");
+            modelBuilder.Entity<Language>().Ignore("Key");
         }
     }
 }

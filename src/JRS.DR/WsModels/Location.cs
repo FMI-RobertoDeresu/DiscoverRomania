@@ -1,6 +1,6 @@
 ﻿namespace JRS.DR.WsModels
 {
-    public class LocationResponse
+    public class Location
     {
         public decimal? X { get; set; }
 

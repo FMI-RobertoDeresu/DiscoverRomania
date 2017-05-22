@@ -7,8 +7,7 @@ namespace JRS.DR.DbContexts.ModelsConfigs
     {
         public static void ConfigureObjectiveType(this ModelBuilder modelBuilder)
         {
-            var entityBuilder = modelBuilder.Entity<ObjectiveType>();
-            entityBuilder.ToTable("ObjectiveType");
+            modelBuilder.Entity<ObjectiveType>().ToTable("ObjectiveType").HasKey(x => x.Id);
         }
     }
 }

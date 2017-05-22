@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using JRS.DR.Contracts;
 using JRS.DR.DbContexts;
 using JRS.DR.Models;
@@ -14,7 +15,7 @@ namespace JRS.DR.Repositories
         where TEntity : EntityBase<TKey>
     {
         private readonly ApplicationDbContext _dbContext;
-        protected DbSet<TEntity> DbSet;
+        protected readonly DbSet<TEntity> DbSet;
 
         public RepositoryBase(ApplicationDbContext dbContext)
         {
@@ -24,6 +25,7 @@ namespace JRS.DR.Repositories
 
         public void Create(TEntity entity)
         {
+            (entity as EntityComplexBase<TKey>)?.PreInsert();
             DbSet.Add(entity);
         }
 
@@ -35,23 +37,22 @@ namespace JRS.DR.Repositories
 
         public void Delete(TEntity entity)
         {
-            (entity as EntityComplexBase<TKey>)?.MarkAsDeleted();
-            _dbContext.Entry(entity).State = EntityState.Modified;
+            if (entity is EntityComplexBase<TKey>)
+            {
+                (entity as EntityComplexBase<TKey>).MarkAsDeleted();
+                _dbContext.Entry(entity).State = EntityState.Modified;
+            }
+            else
+            {
+                DbSet.Remove(entity);
+            }
         }
 
         public void Delete(Expression<Func<TEntity, bool>> where)
         {
             var objects = DbSet.Where(where).AsEnumerable();
             foreach (var obj in objects)
-            {
-                if (obj is EntityComplexBase<TKey>)
-                {
-                    (obj as EntityComplexBase<TKey>).MarkAsDeleted();
-                    _dbContext.Entry(obj).State = EntityState.Modified;
-                }
-                else
-                    DbSet.Remove(obj);
-            }
+                Delete(obj);
         }
 
         public virtual TEntity Get(TKey id)
@@ -66,32 +67,35 @@ namespace JRS.DR.Repositories
 
         public virtual TEntity Get(Expression<Func<TEntity, bool>> where)
         {
-            var result = DbSet.FirstOrDefault(where);
-
-            if ((result as EntityComplexBase<TKey>)?.IsDeleted ?? false)
-                return null;
+            var result = QueryAll().FirstOrDefault(where);
 
             return result;
         }
 
         public virtual IEnumerable<TEntity> GetMany(Expression<Func<TEntity, bool>> where)
         {
-            var result = DbSet.Where(where).ToList();
-
-            if (result.OfType<EntityComplexBase<TKey>>().Any())
-                result = result.Where(x => !((x as EntityComplexBase<TKey>)?.IsDeleted ?? false)).ToList();
+            var result = QueryAll().Where(where).ToList();
 
             return result;
         }
 
         public virtual IEnumerable<TEntity> GetAll()
         {
-            var result = DbSet.ToList();
-
-            if (result.OfType<EntityComplexBase<TKey>>().Any())
-                result = result.Where(x => !((x as EntityComplexBase<TKey>)?.IsDeleted ?? false)).ToList();
+            var result = QueryAll().ToList();
 
             return result;
+        }
+
+        public void SaveChanges()
+        {
+            _dbContext.SaveChanges();
+        }
+
+        protected IQueryable<TEntity> QueryAll()
+        {
+            return typeof(EntityComplexBase<TKey>).IsAssignableFrom(typeof(TEntity))
+                ? DbSet.Where(x => !(x as EntityComplexBase<TKey>).IsDeleted)
+                : DbSet;
         }
     }
 }

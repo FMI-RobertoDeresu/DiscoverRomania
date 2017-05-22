@@ -6,8 +6,13 @@ namespace JRS.DR.Contracts
     {
         GetLanguagesResponse GetLanguages();
         GetObjectiveTypesResponse GetObjectiveTypes(GetObjectiveTypesRequest input);
-        GetObjectivesResponse GetObjectives(GetObjectivesRequest input);
+
         GetObjectiveResponse GetObjective(GetObjectiveRequest input);
+        GetObjectivesResponse GetObjectives(GetObjectivesRequest input);
         GetObjectiveHtmlResponse GetObjectiveHtml(GetObjectiveHtmlRequest input);
+
+        CreateObjectiveResponse CreateObjective(CreateObjectiveRequest input);
+        EditObjectiveResponse EditObjective(EditObjectiveRequest input);
+        DeleteObjectiveResponse DeleteObjective(DeleteObjectiveRequest input);
     }
 }
