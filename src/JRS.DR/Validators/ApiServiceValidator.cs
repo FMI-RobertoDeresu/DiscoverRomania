@@ -67,32 +67,39 @@ namespace JRS.DR.Validators
         {
             var errors = new List<string>();
 
-            if (!input.LanguageId.HasValue)
-                errors.Add($"Param not specified. Param name: {nameof(input.LanguageId)}");
-
-            if (!input.ObjectiveTypeId.HasValue)
-                errors.Add($"Param not specified. Param name: {nameof(input.ObjectiveTypeId)}");
-
-            if (string.IsNullOrEmpty(input.Name))
-                errors.Add($"Param not specified. Param name: {nameof(input.Name)}");
-
-            if (string.IsNullOrEmpty(input.Description))
-                errors.Add($"Param not specified. Param name: {nameof(input.Description)}");
-
-            if (string.IsNullOrEmpty(input.Html))
-                errors.Add($"Param not specified. Param name: {nameof(input.Html)}");
-
-            if (input.Location == null)
+            if (input.Objective == null)
             {
-                errors.Add($"Param not specified. Param name: {nameof(input.Location)}");
+                errors.Add($"Param not specified. Param name: {nameof(input.Objective)}");
             }
             else
             {
-                if (!input.Location.X.HasValue)
-                    errors.Add($"Param not specified. Param name: {nameof(input.Location.X)}");
+                if (!input.Objective.LanguageId.HasValue)
+                    errors.Add($"Param not specified. Param name: {nameof(input.Objective.LanguageId)}");
 
-                if (!input.Location.Y.HasValue)
-                    errors.Add($"Param not specified. Param name: {nameof(input.Location.Y)}");
+                if (!input.Objective.ObjectiveTypeId.HasValue)
+                    errors.Add($"Param not specified. Param name: {nameof(input.Objective.ObjectiveTypeId)}");
+
+                if (string.IsNullOrEmpty(input.Objective.Name))
+                    errors.Add($"Param not specified. Param name: {nameof(input.Objective.Name)}");
+
+                if (string.IsNullOrEmpty(input.Objective.Description))
+                    errors.Add($"Param not specified. Param name: {nameof(input.Objective.Description)}");
+
+                if (string.IsNullOrEmpty(input.Objective.Html))
+                    errors.Add($"Param not specified. Param name: {nameof(input.Objective.Html)}");
+
+                if (input.Objective.Location == null)
+                {
+                    errors.Add($"Param not specified. Param name: {nameof(input.Objective.Location)}");
+                }
+                else
+                {
+                    if (!input.Objective.Location.X.HasValue)
+                        errors.Add($"Param not specified. Param name: {nameof(input.Objective.Location.X)}");
+
+                    if (!input.Objective.Location.Y.HasValue)
+                        errors.Add($"Param not specified. Param name: {nameof(input.Objective.Location.Y)}");
+                }
             }
 
             if (errors.Any())
@@ -103,35 +110,42 @@ namespace JRS.DR.Validators
         {
             var errors = new List<string>();
 
-            if (!input.ObjectiveId.HasValue)
-                errors.Add($"Param not specified. Param name: {nameof(input.ObjectiveId)}");
-
-            if (!input.LanguageId.HasValue)
-                errors.Add($"Param not specified. Param name: {nameof(input.LanguageId)}");
-
-            if (!input.ObjectiveTypeId.HasValue)
-                errors.Add($"Param not specified. Param name: {nameof(input.ObjectiveTypeId)}");
-
-            if (string.IsNullOrEmpty(input.Name))
-                errors.Add($"Param not specified. Param name: {nameof(input.Name)}");
-
-            if (string.IsNullOrEmpty(input.Description))
-                errors.Add($"Param not specified. Param name: {nameof(input.Description)}");
-
-            if (string.IsNullOrEmpty(input.Html))
-                errors.Add($"Param not specified. Param name: {nameof(input.Html)}");
-
-            if (input.Location == null)
+            if (input.Objective == null)
             {
-                errors.Add($"Param not specified. Param name: {nameof(input.Location)}");
+                errors.Add($"Param not specified. Param name: {nameof(input.Objective)}");
             }
             else
             {
-                if (!input.Location.X.HasValue)
-                    errors.Add($"Param not specified. Param name: {nameof(input.Location.X)}");
+                if (!input.Objective.ObjectiveId.HasValue)
+                    errors.Add($"Param not specified. Param name: {nameof(input.Objective.ObjectiveId)}");
 
-                if (!input.Location.Y.HasValue)
-                    errors.Add($"Param not specified. Param name: {nameof(input.Location.Y)}");
+                if (!input.Objective.LanguageId.HasValue)
+                    errors.Add($"Param not specified. Param name: {nameof(input.Objective.LanguageId)}");
+
+                if (!input.Objective.ObjectiveTypeId.HasValue)
+                    errors.Add($"Param not specified. Param name: {nameof(input.Objective.ObjectiveTypeId)}");
+
+                if (string.IsNullOrEmpty(input.Objective.Name))
+                    errors.Add($"Param not specified. Param name: {nameof(input.Objective.Name)}");
+
+                if (string.IsNullOrEmpty(input.Objective.Description))
+                    errors.Add($"Param not specified. Param name: {nameof(input.Objective.Description)}");
+
+                if (string.IsNullOrEmpty(input.Objective.Html))
+                    errors.Add($"Param not specified. Param name: {nameof(input.Objective.Html)}");
+
+                if (input.Objective.Location == null)
+                {
+                    errors.Add($"Param not specified. Param name: {nameof(input.Objective.Location)}");
+                }
+                else
+                {
+                    if (!input.Objective.Location.X.HasValue)
+                        errors.Add($"Param not specified. Param name: {nameof(input.Objective.Location.X)}");
+
+                    if (!input.Objective.Location.Y.HasValue)
+                        errors.Add($"Param not specified. Param name: {nameof(input.Objective.Location.Y)}");
+                }
             }
 
             if (errors.Any())

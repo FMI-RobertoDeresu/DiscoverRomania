@@ -84,6 +84,9 @@ namespace JRS.DR.Controllers
         {
             return ApiCore<CreateObjectiveRequest, CreateObjectiveResponse>(request, ModelState, (input, output) =>
             {
+                if (input.Password != _configuration["password-manager"])
+                    throw new ApiException("Incorrect password!");
+
                 var outputData = _apiService.CreateObjective(input);
                 output = Mapper.Map(outputData, output);
             });
@@ -95,6 +98,9 @@ namespace JRS.DR.Controllers
         {
             return ApiCore<EditObjectiveRequest, EditObjectiveResponse>(request, ModelState, (input, output) =>
             {
+                if (input.Password != _configuration["password-manager"])
+                    throw new ApiException("Incorrect password!");
+
                 var outputData = _apiService.EditObjective(input);
                 output = Mapper.Map(outputData, output);
             });
@@ -106,6 +112,9 @@ namespace JRS.DR.Controllers
         {
             return ApiCore<DeleteObjectiveRequest, DeleteObjectiveResponse>(request, ModelState, (input, output) =>
             {
+                if (input.Password != _configuration["password-manager"])
+                    throw new ApiException("Incorrect password!");
+
                 var outputData = _apiService.DeleteObjective(input);
                 output = Mapper.Map(outputData, output);
             });

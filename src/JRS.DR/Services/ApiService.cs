@@ -96,12 +96,12 @@ namespace JRS.DR.Services
         {
             new ApiServiceValidator().ValidateCreateObjective(input);
 
-            var language = _languageRepository.Get(input.LanguageId.Value);
+            var language = _languageRepository.Get(input.Objective.LanguageId.Value);
 
             if (language == null)
                 throw new ApiException("Language does not exists!");
 
-            var objectiveType = _objectiveTypeRepository.Get(input.ObjectiveTypeId.Value);
+            var objectiveType = _objectiveTypeRepository.Get(input.Objective.ObjectiveTypeId.Value);
 
             if (objectiveType == null)
                 throw new ApiException("Objective type does not exists!");
@@ -109,11 +109,11 @@ namespace JRS.DR.Services
             if (objectiveType.Language != language)
                 throw new ApiException("Objective type has other language than requested language!");
 
-            var location = new Location(input.Location.X.Value, input.Location.Y.Value);
+            var location = new Location(input.Objective.Location.X.Value, input.Objective.Location.Y.Value);
             var status = ObjectiveStatus.Accepted;
 
             var objective = new Objective(language, location, objectiveType, status,
-                input.Name, input.Description, input.Picture, input.Html);
+                input.Objective.Name, input.Objective.Description, input.Objective.Picture, input.Objective.Html);
 
             location.PreInsert(); //TODO: temp way to fix CreatedAt
             _objectiveRepository.Create(objective);
@@ -129,12 +129,12 @@ namespace JRS.DR.Services
         {
             new ApiServiceValidator().ValidateEditObjective(input);
 
-            var language = _languageRepository.Get(input.LanguageId.Value);
+            var language = _languageRepository.Get(input.Objective.LanguageId.Value);
 
             if (language == null)
                 throw new ApiException("Language does not exists!");
 
-            var objectiveType = _objectiveTypeRepository.Get(input.ObjectiveTypeId.Value);
+            var objectiveType = _objectiveTypeRepository.Get(input.Objective.ObjectiveTypeId.Value);
 
             if (objectiveType == null)
                 throw new ApiException("Objective type does not exists!");
@@ -142,18 +142,18 @@ namespace JRS.DR.Services
             if (objectiveType.Language != language)
                 throw new ApiException("Objective type has other language than requested language!");
 
-            var objective = _objectiveRepository.Get(input.ObjectiveId.Value);
+            var objective = _objectiveRepository.Get(input.Objective.ObjectiveId.Value);
             if (objective == null)
                 throw new ApiException("Objective does not exists!");
 
             objective.Language = language;
             objective.Type = objectiveType;
-            objective.Name = input.Name;
-            objective.Description = input.Description;
-            objective.Picture = input.Picture;
-            objective.Html = input.Html;
-            objective.Location.X = input.Location.X.Value;
-            objective.Location.X = input.Location.Y.Value;
+            objective.Name = input.Objective.Name;
+            objective.Description = input.Objective.Description;
+            objective.Picture = input.Objective.Picture;
+            objective.Html = input.Objective.Html;
+            objective.Location.X = input.Objective.Location.X.Value;
+            objective.Location.X = input.Objective.Location.Y.Value;
 
             _objectiveRepository.Update(objective);
             _objectiveRepository.SaveChanges();
