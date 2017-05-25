@@ -7,6 +7,7 @@ using JRS.DR.Models.Common;
 using JRS.DR.Models.Enums;
 using JRS.DR.Validators;
 using JRS.DR.WsModels;
+using Microsoft.Extensions.Configuration;
 using Language = JRS.DR.Models.Common.Language;
 using Location = JRS.DR.Models.Common.Location;
 
@@ -14,15 +15,18 @@ namespace JRS.DR.Services
 {
     public class ApiService : IApiService
     {
+        private readonly IConfigurationRoot _configuration;
         private readonly IObjectiveRepository _objectiveRepository;
         private readonly IRepository<int, Language> _languageRepository;
         private readonly IRepository<int, ObjectiveType> _objectiveTypeRepository;
 
         public ApiService(
+            IConfigurationRoot configuration,
             IObjectiveRepository objectiveRepository,
             IRepository<int, Language> languageRepository,
             IRepository<int, ObjectiveType> objectiveTypeRepository)
         {
+            _configuration = configuration;
             _objectiveRepository = objectiveRepository;
             _languageRepository = languageRepository;
             _objectiveTypeRepository = objectiveTypeRepository;
@@ -94,6 +98,9 @@ namespace JRS.DR.Services
 
         public CreateObjectiveResponse CreateObjective(CreateObjectiveRequest input)
         {
+            if (input.Password != _configuration["password-manager"])
+                throw new ApiException("Incorrect password!");
+
             new ApiServiceValidator().ValidateCreateObjective(input);
 
             var language = _languageRepository.Get(input.Objective.LanguageId.Value);
@@ -127,6 +134,9 @@ namespace JRS.DR.Services
 
         public EditObjectiveResponse EditObjective(EditObjectiveRequest input)
         {
+            if (input.Password != _configuration["password-manager"])
+                throw new ApiException("Incorrect password!");
+
             new ApiServiceValidator().ValidateEditObjective(input);
 
             var language = _languageRepository.Get(input.Objective.LanguageId.Value);
@@ -166,6 +176,9 @@ namespace JRS.DR.Services
 
         public DeleteObjectiveResponse DeleteObjective(DeleteObjectiveRequest input)
         {
+            if (input.Password != _configuration["password-manager"])
+                throw new ApiException("Incorrect password!");
+
             new ApiServiceValidator().ValidateDeleteObjective(input);
 
             var objective = _objectiveRepository.Get(input.ObjectiveId.Value);

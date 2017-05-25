@@ -8,14 +8,27 @@
 
     <title>JRS - DR</title>
     <link rel="icon" type="image/png" href="~/favicon.png"/>
-    
-    <!-- styles -->
-    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <environment Names="Development">
+        <link asp-append-version="true" rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css"/>
+    </environment>
+    <environment Names="Staging,Production">
+        <link asp-append-version="true" rel="stylesheet" href="~/css/site.min.css"/>
+    </environment>
 </head>
 <body>
-    @RenderBody()
-    
-    <!-- scripts -->
-    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <div class="container">
+        @RenderBody()
+    </div>
+
+    <environment Names="Development">
+        <script asp-append-version="true" src="~/lib/jquery/dist/jquery.js"></script>
+        <script asp-append-version="true" src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    </environment>
+    <environment Names="Staging,Production">
+        <script asp-append-version="true" src="~/js/site.min.js"></script>
+    </environment>
+
+    @RenderSection("scripts", false)
 </body>
 </html>
