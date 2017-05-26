@@ -35,7 +35,7 @@ namespace JRS.DR.Controllers
         [HttpPost]
         public IActionResult Auth(string password)
         {
-            if (!IsAuthenticated)
+            if (IsAuthenticated)
                 return RedirectToAction("Index");
 
             Authenticate(password);
