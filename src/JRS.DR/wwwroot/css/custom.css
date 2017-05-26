@@ -1,4 +1,24 @@
-﻿#map {
+﻿html {
+    min-height: 100%;
+    position: relative;
+}
+
+body {
+    margin: 0 0 25px;
+}
+
+.footer {
+    background-color: #eeeeee;
+    bottom: 0;
+    clear: both;
+    display: block;
+    left: 0;
+    padding: 15px;
+    position: absolute;
+    right: 0;
+}
+
+#map {
     height: 500px;
 }
 
@@ -17,24 +37,7 @@
 .pointer-none {
     pointer-events: none;
 }
-        height: 500px;
-    }
-html {
-    position: relative;
-    min-height: 100%;
-}
 
-body {
-    margin: 0 0 25px; 
-}
-
-.footer {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    clear:both;
-    background-color: #eeeeee;
-    padding: 15px;
-    display: block; 
+.m-l-15 {
+    margin-left: 15px;
 }

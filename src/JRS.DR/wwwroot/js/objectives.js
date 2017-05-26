@@ -1,4 +1,7 @@
-﻿(function() {
+﻿"use strict";
+
+(function () {
+
     var objectiveId;
 
     function openDeleteObjectiveModal(objId) {

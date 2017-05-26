@@ -7,56 +7,57 @@
     <div class="col-xs-12">
         <div class="x_panel">
             <div class="x_title">
-                <a class="btn btn-danger" href="./">Inapoi</a>
+                <a class="btn btn-danger m-l-15" href="./">Inapoi</a>
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
                 <br/>
-                @using (Html.BeginForm("Create", "Admin", FormMethod.Post, new { id = "createObjectiveForm" }))
+                @using (Html.BeginForm(Model.ObjectiveId.HasValue ? "Edit" : "Create", "Admin", FormMethod.Post, new { id = "createObjectiveForm" }))
                 {
                     @Html.AntiForgeryToken()
-                    @Html.ValidationSummary(true, string.Empty, new { @class = "text-danger" })
+                    @Html.ValidationSummary(false, string.Empty, new { @class = "text-danger" })
                     @Html.HiddenFor(model => model.ObjectiveId)
                     @Html.HiddenFor(model => model.Html)
                     @Html.HiddenFor(model => model.Location.X)
                     @Html.HiddenFor(model => model.Location.Y)
 
-                    <div class="col-md-12 form-group">
+                    <div class="col-xs-12 col-md-6 form-group">
                         @Html.LabelFor(m => m.LanguageId, new { @class = "control-label" })
                         @Html.ValidationMessageFor(m => m.LanguageId, "", new { @class = "text-danger" })
                         @Html.DropDownListFor(m => m.LanguageId, new SelectList(new List<SelectListItem>(), "Value", "Text"), "Alegeti limba obiectivului", new { @class = "form-control" })
                     </div>
-                    <div class="col-md-12 form-group">
+                    <div class="col-xs-12 col-md-6 form-group">
                         @Html.LabelFor(m => m.ObjectiveTypeId, new { @class = "control-label" })
                         @Html.ValidationMessageFor(m => m.ObjectiveTypeId, "", new { @class = "text-danger" })
                         @Html.DropDownListFor(m => m.ObjectiveTypeId, new SelectList(new List<SelectListItem>(), "Value", "Text"), "Alegeti categoria obiectivului", new { @class = "form-control" })
                     </div>
-                    <div class="col-md-12 form-group">
+                    <div class="col-xs-12 col-md-6 form-group">
                         @Html.LabelFor(m => m.Name, new { @class = "control-label" })<br/>
                         @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
                         @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
                     </div>
-                    <div class="col-md-12 form-group">
+                    <div class="col-xs-12 col-md-6 form-group">
                         @Html.LabelFor(m => m.Picture, new { @class = "control-label" })<br/>
                         @Html.ValidationMessageFor(m => m.Picture, "", new { @class = "text-danger" })
                         @Html.TextBoxFor(m => m.Picture, new { @class = "form-control" })
                     </div>
-                    <div class="col-md-12 form-group">
+                    <div class="col-xs-12 form-group">
                         @Html.LabelFor(m => m.Description, new { @class = "control-label required" })<br/>
                         @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
                         @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
                     </div>
-                    <div class="col-md-12 form-group">
+                    <div class="col-xs-12 form-group">
                         @Html.LabelFor(m => m.Html, new { @class = "control-label" })<br/>
                         <div id="summernote" class="summernote"></div>
                     </div>
-                    <div class="col-md-12 form-group">
+                    <div class="col-xs-12 form-group">
                         @Html.LabelFor(m => m.Location, new { @class = "control-label" })<br/>
                         @Html.ValidationMessageFor(m => m.Location, "", new { @class = "text-danger" })
                         <div id="map"></div>
                     </div>
-                    <div class="form-group">
-                        <input type="submit" value="Salveaza obiectiv" class="btn btn-success pull-right"/>
+                    <div class="col-xs-12 form-group">
+                        <br/>
+                        <input type="submit" value="Salveaza obiectiv" class="btn btn-success"/>
                     </div>
                 }
             </div>
@@ -65,123 +66,5 @@
 </div>
 
 @section scripts{
-    <script>
-        $(document).ready(function () {
-            var langId = 1; // parseInt('@Model.LanguageId');
-            var objTypeId = parseInt('@Model.ObjectiveTypeId');
-
-            $('#summernote').summernote({ height: 200 });
-
-            $("#createObjectiveForm").submit(function(e) {
-                e.preventDefault();
-                $('#Html').val($('#summernote').summernote('code'));
-                this.submit();
-            });
-
-            function getLanguages() {
-                $.ajax({
-                    url: "/Admin/GetLanguages",
-                    type: "GET",
-                    data: {},
-                    dataType: "json",
-                    success: function (res) {
-                        for (var i = 0; i < res.length; i++) {
-                            $('#LanguageId').append('<option value=' + res[i].id + '>' + res[i].name + '</option>');
-                        }
-                        if (langId) { // on edit
-                            $('#LanguageId').val(langId);
-                            getObjectiveTypes(langId);
-                            langId = null;
-                        }
-                    },
-                    error: function (xhr, ajaxOptions, thrownError) {
-                        toastr.error('A aparut o eroare');
-                    }
-                });
-            }
-
-            $('#LanguageId').change(function () {
-                var languageId = $('#LanguageId').val();
-                getObjectiveTypes(languageId);
-            });
-
-            function getObjectiveTypes(languageId) {
-                $("#ObjectiveTypeId option").remove();
-                $('#ObjectiveTypeId').append('<option value="">Alegeti categoria obiectivului</option>');
-                $.ajax({
-                    url: "/Admin/GetObjectiveTypes",
-                    type: "GET",
-                    data: { 'languageId': languageId },
-                    dataType: "json",
-                    success: function (res) {
-                        for (var i = 0; i < res.length; i++) {
-                            $('#ObjectiveTypeId').append('<option value=' + res[i].id + '>' + res[i].name + '</option>');
-                        }
-                        if (objTypeId) { // on edit
-                            $('#ObjectiveTypeId').val(objTypeId);
-                            objTypeId = null;
-                        }
-                    },
-                    error: function (xhr, ajaxOptions, thrownError) {
-                        toastr.error('A aparut o eroare');
-                    }
-                });
-            }
-
-            getLanguages();
-            $('#summernote').summernote('code', $('#Html').val()); // on edit
-        });
-    </script>
-    <script>
-        var map;
-        var markers = [];
-        var lat = $('#Location_X').val();
-        var lng = $('#Location_Y').val();
-
-        function initMap() {
-            map = new window.google.maps.Map(document.getElementById('map'), {
-                center: { lat: 45.464862, lng: 25.3388779 },
-                zoom: 7
-            });
-
-            map.addListener('click', function(e) {
-                placeMarker(e.latLng, map);
-            });
-
-            function placeMarker(latLng, map) {
-                clearMarkers();
-
-                const marker = new window.google.maps.Marker({
-                    position: latLng,
-                    map: map
-                });
-
-                markers.push(marker);
-                $('#Location_X').val(latLng.lat());
-                $('#Location_Y').val(latLng.lng());
-            }
-
-            if (lat && lng) { // on edit
-                var myLatLng = { lat: parseFloat(lat), lng: parseFloat(lng) };
-                lat = null;
-                lng = null;
-                var marker = new window.google.maps.Marker({
-                    position: myLatLng,
-                    map: map
-                });
-                markers.push(marker);
-            }
-
-            function setMapOnAll(map) {
-                for (let i = 0; i < markers.length; i++) {
-                    markers[i].setMap(map);
-                }
-            }
-
-            function clearMarkers() {
-                setMapOnAll(null);
-            }
-        }
-    </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAgdztzg0KH-LQwK5nRKxXq-fcwViT8dMQ&callback=initMap" async defer></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAgdztzg0KH-LQwK5nRKxXq-fcwViT8dMQ&callback=initMap"></script>
 }

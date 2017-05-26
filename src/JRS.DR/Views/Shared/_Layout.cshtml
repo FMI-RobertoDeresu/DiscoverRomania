@@ -1,23 +1,23 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <meta name="keywords" content="Romania, Disconver, Points of interest">
     <meta name="description" content="Discover Romania. Habits and traditions, historical events, points of interest, etc.">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
     <title>JRS - DR</title>
-    <link rel="icon" type="image/png" href="~/favicon.png" />
+    <link rel="icon" type="image/png" href="~/favicon.png"/>
 
     <environment Names="Development">
-        <link asp-append-version="true" rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <link asp-append-version="true" rel="stylesheet" href="~/lib/toastr/toastr.css" />
-        <link asp-append-version="true" rel="stylesheet" href="~/lib/summernote/dist/summernote.css" />
-        <link asp-append-version="true" rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.css" />
+        <link asp-append-version="true" rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css"/>
+        <link asp-append-version="true" rel="stylesheet" href="~/lib/toastr/toastr.css"/>
+        <link asp-append-version="true" rel="stylesheet" href="~/lib/summernote/dist/summernote.css"/>
+        <link asp-append-version="true" rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.css"/>
         <link asp-append-version="true" rel="stylesheet" href="~/css/custom.css"/>
     </environment>
     <environment Names="Staging,Production">
-        <link asp-append-version="true" rel="stylesheet" href="~/css/site.min.css" />
+        <link asp-append-version="true" rel="stylesheet" href="~/css/site.min.css"/>
     </environment>
 </head>
 <body>
@@ -47,6 +47,8 @@
         <script asp-append-version="true" src="~/lib/toastr/toastr.js"></script>
         <script asp-append-version="true" src="~/lib/summernote/dist/summernote.js"></script>
         <script asp-append-version="true" src="~/js/objectives.js"></script>
+        <script asp-append-version="true" src="~/js/createEditObjective.js"></script>
+        <script asp-append-version="true" src="~/js/initMap.js"></script>
     </environment>
     <environment Names="Staging,Production">
         <script asp-append-version="true" src="~/js/site.min.js"></script>
@@ -54,7 +56,7 @@
 
     @RenderSection("scripts", false)
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             const success = '@ViewBag.Success';
             if (success !== "")
                 toastr.success(success);

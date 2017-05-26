@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace JRS.DR.Controllers
 {
+    [Route("admin")]
     public class AdminController : AppBaseController
     {
         private readonly IApiService _apiService;
@@ -29,7 +30,7 @@ namespace JRS.DR.Controllers
             _applicationLogger = applicationLogger;
         }
 
-        [HttpGet("/admin")]
+        [HttpGet("")]
         public IActionResult Index(int? page, int? persistentCount)
         {
             if (!IsAuthenticated)
@@ -196,7 +197,7 @@ namespace JRS.DR.Controllers
         }
 
         //ajax
-        [HttpGet]
+        [HttpGet("getLanguages")]
         public IActionResult GetLanguages()
         {
             var languagesResponse = _apiService.GetLanguages();
@@ -204,7 +205,7 @@ namespace JRS.DR.Controllers
             return Ok(languagesModels);
         }
 
-        [HttpGet]
+        [HttpGet("getObjectiveTypes")]
         public IActionResult GetObjectiveTypes(int? languageId)
         {
             var getObjectiveTypesRequest = new GetObjectiveTypesRequest { LanguageId = languageId };
