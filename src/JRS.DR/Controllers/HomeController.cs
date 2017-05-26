@@ -6,12 +6,7 @@ namespace JRS.DR.Controllers
     {
         public IActionResult Index()
         {
-            return View();
-        }
-
-        public IActionResult Error()
-        {
-            return View();
+            return RedirectToAction("Auth", "Admin");
         }
     }
 }

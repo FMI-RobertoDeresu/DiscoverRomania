@@ -4,7 +4,6 @@ using JRS.DR.Extensions;
 using JRS.DR.Filters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -54,7 +53,6 @@ namespace JRS.DR
                         options.SerializerSettings.Formatting = Formatting.Indented;
                         options.SerializerSettings.Converters.Add(new StringEnumConverter());
                     });
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             //swagger
             services.AddSwaggerGen(
@@ -98,10 +96,13 @@ namespace JRS.DR
             app.ConfigureNLog(env, loggerFactory, Configuration["db:default"]);
 
             //env options
-            if (env.IsDevelopment())
+            if (!env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
             else
                 app.UseExceptionHandler("/error");
+
+            //status code pages
+            app.UseStatusCodePagesWithRedirects("/error/code/{0}");
 
             //static files
             app.UseStaticFiles();
@@ -110,12 +111,7 @@ namespace JRS.DR
             app.UseCors("cors");
 
             //mvc
-            app.UseMvc(
-                routes =>
-                {
-                    routes.MapRoute("error", "error", new { controller = "home", action = "error" });
-                    routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
-                });
+            app.UseMvc(routes => routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}"));
 
             //swagger
             app.UseSwagger();
