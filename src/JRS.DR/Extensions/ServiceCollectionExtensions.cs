@@ -2,6 +2,7 @@
 using JRS.DR.Logging;
 using JRS.DR.Repositories;
 using JRS.DR.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace JRS.DR.Extensions
@@ -10,6 +11,7 @@ namespace JRS.DR.Extensions
     {
         public static IServiceCollection RegisterServices(this IServiceCollection services)
         {
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IApiService, ApiService>();
             return services;
         }
