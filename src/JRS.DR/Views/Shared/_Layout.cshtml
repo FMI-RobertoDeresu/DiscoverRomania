@@ -13,7 +13,7 @@
         <link asp-append-version="true" rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link asp-append-version="true" rel="stylesheet" href="~/lib/toastr/toastr.css" />
         <link asp-append-version="true" rel="stylesheet" href="~/lib/summernote/dist/summernote.css" />
-        <link asp-append-version="true" rel="stylesheet" href="~/css/custom.css"/>
+        <link asp-append-version="true" rel="stylesheet" href="~/css/custom.css" />
     </environment>
     <environment Names="Staging,Production">
         <link asp-append-version="true" rel="stylesheet" href="~/css/site.min.css" />
@@ -28,10 +28,18 @@
             </div>
         </div>
     }
-    <div class="container-fluid">
-        @RenderBody()
+    <div class="jumbotron">
+        <div class="container-fluid">
+            @RenderBody()
+        </div>
     </div>
-
+    <div class="row">
+        <div class="col-xs-12 footer">
+            <div class="text-center">
+                <strong><i class="fa fa-copyright" aria-hidden="true" 0>&copy;&nbsp;2017</i>&nbsp;|&nbsp;JRS Romania Team</strong>
+            </div>
+        </div>
+    </div>
     <environment Names="Development">
         <script asp-append-version="true" src="~/lib/jquery/dist/jquery.js"></script>
         <script asp-append-version="true" src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
