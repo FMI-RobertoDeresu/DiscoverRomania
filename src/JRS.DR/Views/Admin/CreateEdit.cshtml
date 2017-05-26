@@ -2,12 +2,17 @@
 @{
     ViewBag.Title = "Create";
 }
+<div class="row">
+    <div class="col col-xs-12">
+        <a class="btn btn-primary pull-right" href="@Url.Action("LogOut", "Admin")">Deconectare</a>
+    </div>
+</div>
 
 <div class="row">
     <div class="col-xs-12">
         <div class="x_panel">
             <div class="x_title">
-                <a class="btn btn-danger" href="./">Inapoi</a>
+                <a class="btn btn-danger" href='javascript:history.go(-1)'>Inapoi</a>
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
@@ -67,7 +72,7 @@
 @section scripts{
     <script>
         $(document).ready(function () {
-            var langId = 1; // parseInt('@Model.LanguageId');
+            var langId = parseInt('@Model.LanguageId');
             var objTypeId = parseInt('@Model.ObjectiveTypeId');
 
             $('#summernote').summernote({ height: 200 });

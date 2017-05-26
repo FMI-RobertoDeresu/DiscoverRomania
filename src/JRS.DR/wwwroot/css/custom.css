@@ -2,6 +2,30 @@
     height: 500px;
 }
 
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin: 0 0 25px; 
+}
+
+.header{
+    margin 10px 10px 10px 10px;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    clear:both;
+    background-color: #eeeeee;
+    padding: 15px;
+    display: block; 
+}
+
 .pagination {
     margin: 0;
 }
@@ -16,25 +40,4 @@
 
 .pointer-none {
     pointer-events: none;
-}
-        height: 500px;
-    }
-html {
-    position: relative;
-    min-height: 100%;
-}
-
-body {
-    margin: 0 0 25px; 
-}
-
-.footer {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    clear:both;
-    background-color: #eeeeee;
-    padding: 15px;
-    display: block; 
 }
