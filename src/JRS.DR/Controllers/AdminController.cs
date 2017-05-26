@@ -44,7 +44,7 @@ namespace JRS.DR.Controllers
             var model = new PagedList<ObjectiveModel>(page.Value, persistentCount.Value, objectivesModels);
 
             return View(model);
-        }
+        }  
 
         [HttpGet("auth")]
         public IActionResult Auth()
@@ -67,6 +67,13 @@ namespace JRS.DR.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+        [HttpGet("logout")]
+        public IActionResult LogOut()
+        {
+            Deauthenticate();
+            return RedirectToAction("Auth");
         }
 
         [HttpGet("create")]

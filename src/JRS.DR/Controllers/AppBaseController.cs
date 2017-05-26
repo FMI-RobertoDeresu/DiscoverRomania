@@ -27,5 +27,10 @@ namespace JRS.DR.Controllers
             if (_configuration["password-manager"] == password)
                 HttpContext.Session.SetString(IsSecureSessionKey, "true");
         }
+
+        protected void Deauthenticate()
+        {
+            HttpContext.Session.Remove(IsSecureSessionKey);
+        }
     }
 }
