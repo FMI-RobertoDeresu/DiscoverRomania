@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using AutoMapper;
 using JRS.DR.Contracts;
 using JRS.DR.Extensions;
+using JRS.DR.Models;
 using JRS.DR.ViewModels.Admin;
 using JRS.DR.WsModels;
 using Microsoft.AspNetCore.Mvc;
@@ -12,27 +13,45 @@ namespace JRS.DR.Controllers
 {
     public class AdminController : AppBaseController
     {
-        private const int PageSize = 20;
-
         private readonly IApiService _apiService;
+        private readonly IObjectiveRepository _objectiveRepository;
         private readonly IApplicationLogger _applicationLogger;
 
-        public AdminController(IApiService apiService,
+        public AdminController(
+            IApiService apiService,
+            IObjectiveRepository objectiveRepository,
             IApplicationLogger applicationLogger,
             IConfigurationRoot configuration)
             : base(configuration)
         {
             _apiService = apiService;
+            _objectiveRepository = objectiveRepository;
             _applicationLogger = applicationLogger;
         }
 
-        [HttpGet]
+        [HttpGet("/admin")]
+        public IActionResult Index(int? page, int? persistentCount)
+        {
+            if (!IsAuthenticated)
+                return RedirectToAction("Auth");
+
+            page = page ?? 1;
+            persistentCount = persistentCount ?? _objectiveRepository.CountAll();
+            var objectives = _objectiveRepository.GetPaged(page.Value, PagedList.DefaultPageSize);
+
+            var objectivesModels = Mapper.Map<IList<ObjectiveModel>>(objectives);
+            var model = new PagedList<ObjectiveModel>(page.Value, persistentCount.Value, objectivesModels);
+
+            return View(model);
+        }
+
+        [HttpGet("auth")]
         public IActionResult Auth()
         {
             return View();
         }
 
-        [HttpPost]
+        [HttpPost("auth")]
         public IActionResult Auth(string password)
         {
             if (IsAuthenticated)
@@ -49,27 +68,7 @@ namespace JRS.DR.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet]
-        public IActionResult Index(int? page)
-        {
-            if (!IsAuthenticated)
-                return RedirectToAction("Auth");
-
-            var model = new ObjectivesListModel();
-            page = page ?? 1;
-
-            model.Objectives = new List<ObjectiveLightModel>();
-            model.Page = (int) page;
-
-            //   var objectives = _objectivesRepository.GetAll();
-            model.Objectives.Add(new ObjectiveLightModel { ObjectiveId = 1, Description = "test1", Name = "test1" });
-            model.Objectives.Add(new ObjectiveLightModel { ObjectiveId = 2, Description = "test2", Name = "test2" });
-            model.Objectives.Add(new ObjectiveLightModel { ObjectiveId = 3, Description = "test3", Name = "test3" });
-
-            return View("Objectives", model);
-        }
-
-        [HttpGet]
+        [HttpGet("create")]
         public IActionResult Create()
         {
             if (!IsAuthenticated)
@@ -78,7 +77,7 @@ namespace JRS.DR.Controllers
             return View("CreateEdit", new ObjectiveModel());
         }
 
-        [HttpPost]
+        [HttpPost("create")]
         public IActionResult Create(ObjectiveModel model)
         {
             if (!IsAuthenticated)
@@ -114,7 +113,7 @@ namespace JRS.DR.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpGet("edit")]
         public IActionResult Edit(int objectiveId)
         {
             if (!IsAuthenticated)
@@ -122,22 +121,15 @@ namespace JRS.DR.Controllers
 
             try
             {
-                var getObjectiveRequest = new GetObjectiveRequest { ObjectiveId = objectiveId };
-                var getObjectiveResponse = _apiService.GetObjective(getObjectiveRequest);
-
-                var getObjectiveHtmlRequest = new GetObjectiveHtmlRequest { ObjectiveId = objectiveId };
-                var getObjectiveHtmlResponse = _apiService.GetObjectiveHtml(getObjectiveHtmlRequest);
-
-                if (!getObjectiveResponse.IsError && !getObjectiveHtmlResponse.IsError)
+                var objective = _objectiveRepository.Get(objectiveId);
+                if (objective == null)
                 {
-                    var objectiveModel = Mapper.Map<ObjectiveModel>(getObjectiveResponse.Objective);
-                    objectiveModel.Html = getObjectiveHtmlResponse.Html;
-                    return View("CreateEdit", objectiveModel);
+                    ViewBag.Error = "Obiectivul nu a fost gasit.";
+                    return RedirectToAction("Index");
                 }
 
-                getObjectiveResponse.Messages.ForEach(x => ModelState.AddModelError("", x));
-                getObjectiveResponse.Messages.ForEach(x => ModelState.AddModelError("", x));
-                return View("CreateEdit", new ObjectiveModel());
+                var objectiveModel = Mapper.Map<ObjectiveModel>(objective);
+                return View("CreateEdit", objectiveModel);
             }
             catch (Exception exception)
             {
@@ -147,7 +139,7 @@ namespace JRS.DR.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("edit")]
         public IActionResult Edit(ObjectiveModel model)
         {
             if (!IsAuthenticated)
@@ -183,7 +175,7 @@ namespace JRS.DR.Controllers
             }
         }
 
-        [HttpDelete]
+        [HttpDelete("delete")]
         public IActionResult Delete(int objectiveId)
         {
             try

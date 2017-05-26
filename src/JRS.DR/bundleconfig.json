@@ -2,7 +2,11 @@
   {
     "outputFileName": "wwwroot/css/site.min.css",
     "inputFiles": [
-      "wwwroot/lib/bootstrap/dist/css/bootstrap.min.css"
+      "wwwroot/lib/bootstrap/dist/css/bootstrap.min.css",
+      "wwwroot/lib/toastr/toastr.min.css",
+      "wwwroot/lib/summernote/dist/summernote.css",
+      "wwwroot/lib/font-awesome/css/font-awesome.min.css",
+      "wwwroot/css/custom.css"
     ],
     "minify": {
       "enabled": true
@@ -12,7 +16,10 @@
     "outputFileName": "wwwroot/js/site.min.js",
     "inputFiles": [
       "wwwroot/lib/jquery/dist/jquery.min.js",
-      "wwwroot/lib/bootstrap/dist/js/bootstrap.min.js"
+      "wwwroot/lib/bootstrap/dist/js/bootstrap.min.js",
+      "wwwroot/lib/toastr/toastr.min.js",
+      "wwwroot/lib/summernote/dist/summernote.min.js",
+      "wwwroot/js/objectives.js"
     ],
     "minify": {
       "enabled": true

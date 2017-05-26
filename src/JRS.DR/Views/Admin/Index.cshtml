@@ -1,1 +1,64 @@
-﻿
+﻿@model JRS.DR.Models.PagedList<JRS.DR.ViewModels.Admin.ObjectiveModel>
+
+<div class="row section">
+    <div class="col-xs-12">
+        <h1 class="text-center">Administrare obiective</h1>
+    </div>
+</div>
+
+<div class="row section">
+    <div class="col col-xs-6">
+        <a class="btn btn-primary" href="@Url.Action("Create", "Admin")">Creare Obiectiv</a>
+    </div>
+</div>
+<div class="row section">
+    <div class="col-sm-12">
+        <div class="panel panel-default panel-table">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col col-xs-12">
+                        @Html.Partial("PaginationPartial", Model)
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <table class="table table-striped table-bordered table-list">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th class="col-xs-3">Denumire</th>
+                            <th class="col-xs-7">Descriere</th>
+                            <th class="col-xs-2"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Items)
+                        {
+                            <tr>
+                                <th>@Model.PagedIndexOf(item)</th>
+                                <td>@item.Name</td>
+                                <td>@item.Description</td>
+                                <td>
+                                    <div>
+                                        <a class="btn btn-primary" href="@Url.Action("Edit", "Admin", new { objectiveId = item.ObjectiveId })">Edit</a>
+                                        <a class="btn btn-danger" onclick="window.openDeleteObjectiveModal(@item.ObjectiveId);">Delete</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col col-xs-12">
+                        @{ ViewBag.OnlyPaginationButtons = true; }
+                        @Html.Partial("PaginationPartial", Model)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Partial("DeleteObjectiveModalPartial")

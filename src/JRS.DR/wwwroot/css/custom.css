@@ -1,3 +1,19 @@
 ﻿#map {
-        height: 500px;
-    }
+    height: 500px;
+}
+
+.pagination {
+    margin: 0;
+}
+
+.panel-body > table.table {
+    margin-bottom: 0;
+}
+
+.row.section {
+    margin-bottom: 10px;
+}
+
+.pointer-none {
+    pointer-events: none;
+}
