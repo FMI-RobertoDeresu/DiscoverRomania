@@ -79,6 +79,10 @@ namespace JRS.DR
                     options.AllowNullCollections = true;
                 });
 
+            //session
+            services.AddDistributedMemoryCache();
+            services.AddSession();
+
             //config
             services.AddSingleton(Configuration);
 
@@ -109,13 +113,16 @@ namespace JRS.DR
             //cors
             app.UseCors("cors");
 
+            //session
+            app.UseSession();
+
             //mvc
             app.UseMvc(
                 routes =>
                 {
                     routes.MapRoute("error", "error", new { controller = "home", action = "error" });
                     routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
-                });
+                });         
 
             //swagger
             app.UseSwagger();

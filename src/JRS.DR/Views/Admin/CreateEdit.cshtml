@@ -2,3 +2,121 @@
 @{
     ViewBag.Title = "Create";
 }
+<style>
+    #map {
+        height: 500px;
+    }
+</style>
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <br />
+                @using (Html.BeginForm("Create", "Admin", FormMethod.Post, new { id = "createObjectiveForm" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.ObjectiveId)
+                    @Html.HiddenFor(model => model.Html)
+                    @Html.HiddenFor(model => model.Location.X)
+                    @Html.HiddenFor(model => model.Location.Y)
+
+                    <div class="col-md-12 form-group">
+                        @Html.LabelFor(m => m.Languages, new { @class = "control-label" })                        
+                        @Html.ValidationMessageFor(m => m.LanguageId, "", new { @class = "text-danger" })
+                        @Html.DropDownListFor(m => m.LanguageId, new SelectList(Model.Languages, "Value", "Text"), "Alegeti limba obiectivului", new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-12 form-group">
+                        @Html.LabelFor(m => m.ObjectiveTypes, new { @class = "control-label" })
+                        @Html.ValidationMessageFor(m => m.ObjectiveTypeId, "", new { @class = "text-danger" })
+                        @Html.DropDownListFor(m => m.ObjectiveTypeId, new SelectList(Model.ObjectiveTypes, "Value", "Text"), "Alegeti categoria obiectivului", new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-12 form-group">
+                        @Html.LabelFor(m => m.Name, new { @class = "control-label" })<br />
+                        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-12 form-group">
+                        @Html.LabelFor(m => m.Picture, new { @class = "control-label" })<br />
+                        @Html.ValidationMessageFor(m => m.Picture, "", new { @class = "text-danger" })
+                        @Html.TextBoxFor(m => m.Picture, new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-12 form-group">
+                        @Html.LabelFor(m => m.Description, new { @class = "control-label required" })<br />
+                        @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+                        @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-12 form-group">
+                        @Html.LabelFor(m => m.Html, new { @class = "control-label" })<br />
+                        <div id="summernote" class="summernote"></div>
+                    </div>
+                    <div class="col-md-12 form-group">
+                        @Html.LabelFor(m => m.Location, new { @class = "control-label" })<br />
+                        @Html.ValidationMessageFor(m => m.Location, "", new { @class = "text-danger" })
+                        <div id="map"></div>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Salveaza obiectiv" class="btn btn-success pull-right" />
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#summernote').summernote({ height: 200 });
+
+            $("#createObjectiveForm").submit(function (e) {
+                e.preventDefault();
+                $('#Html').val($('#summernote').summernote('code'));
+                this.submit();
+            });
+        });
+    </script>
+    <script>
+        var map;
+        var markers = [];
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: 45.464862, lng: 25.3388779 },
+                zoom: 7
+            });
+
+            map.addListener('click', function (e) {
+                placeMarker(e.latLng, map);
+            });
+
+            function placeMarker(latLng, map) {
+                clearMarkers();
+
+                var marker = new google.maps.Marker({
+                    position: latLng,
+                    map: map
+                });
+
+                markers.push(marker);
+                $('#Location_X').val(latLng.lat());
+                $('#Location_Y').val(latLng.lng());
+            }
+
+            function setMapOnAll(map) {
+                for (let i = 0; i < markers.length; i++) {
+                    markers[i].setMap(map);
+                }
+            }
+
+            function clearMarkers() {
+                setMapOnAll(null);
+            }
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAgdztzg0KH-LQwK5nRKxXq-fcwViT8dMQ&callback=initMap" async defer></script>
+}

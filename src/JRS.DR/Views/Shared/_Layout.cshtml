@@ -1,22 +1,32 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8"/>
+    <meta charset="utf-8" />
     <meta name="keywords" content="Romania, Disconver, Points of interest">
     <meta name="description" content="Discover Romania. Habits and traditions, historical events, points of interest, etc.">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>JRS - DR</title>
-    <link rel="icon" type="image/png" href="~/favicon.png"/>
+    <link rel="icon" type="image/png" href="~/favicon.png" />
 
     <environment Names="Development">
-        <link asp-append-version="true" rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css"/>
+        <link asp-append-version="true" rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link asp-append-version="true" rel="stylesheet" href="~/lib/toastr/toastr.css" />
+        <link asp-append-version="true" rel="stylesheet" href="~/lib/summernote/dist/summernote.css" />
     </environment>
     <environment Names="Staging,Production">
-        <link asp-append-version="true" rel="stylesheet" href="~/css/site.min.css"/>
+        <link asp-append-version="true" rel="stylesheet" href="~/css/site.min.css" />
     </environment>
 </head>
 <body>
+    @if (ViewBag.LoggedIn != null)
+    {
+        <div class="panel panel-default panel-blue">
+            <div class="panel-heading">
+                Esti logat!
+            </div>
+        </div>
+    }
     <div class="container">
         @RenderBody()
     </div>
@@ -24,11 +34,25 @@
     <environment Names="Development">
         <script asp-append-version="true" src="~/lib/jquery/dist/jquery.js"></script>
         <script asp-append-version="true" src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script asp-append-version="true" src="~/lib/toastr/toastr.js"></script>
+        <script asp-append-version="true" src="~/lib/summernote/dist/summernote.js"></script>
     </environment>
     <environment Names="Staging,Production">
         <script asp-append-version="true" src="~/js/site.min.js"></script>
     </environment>
 
     @RenderSection("scripts", false)
+    <script>
+        $(document).ready(function () {
+
+            var success = '@ViewBag.Success';
+            if (success != '')
+                toastr.success(success);
+
+            error = '@ViewBag.Error';
+            if (error != '')
+                toastr.error(error);
+        });
+    </script>
 </body>
 </html>
