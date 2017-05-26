@@ -4,4 +4,5 @@
 /// <reference path="lib/jquery/dist/jquery.js" />
 /// <reference path="lib/summernote/dist/summernote.js" />
 /// <reference path="lib/toastr/toastr.js" />
+/// <reference path="static/js/main.5d0ed97e.js" />
 /// <reference path="static/js/main.943f472e.js" />
