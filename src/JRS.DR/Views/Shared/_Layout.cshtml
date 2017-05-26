@@ -13,6 +13,7 @@
         <link asp-append-version="true" rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link asp-append-version="true" rel="stylesheet" href="~/lib/toastr/toastr.css" />
         <link asp-append-version="true" rel="stylesheet" href="~/lib/summernote/dist/summernote.css" />
+        <link asp-append-version="true" rel="stylesheet" href="~/css/custom.css"/>
     </environment>
     <environment Names="Staging,Production">
         <link asp-append-version="true" rel="stylesheet" href="~/css/site.min.css" />
@@ -27,7 +28,7 @@
             </div>
         </div>
     }
-    <div class="container">
+    <div class="container-fluid">
         @RenderBody()
     </div>
 
@@ -44,12 +45,11 @@
     @RenderSection("scripts", false)
     <script>
         $(document).ready(function () {
-
-            var success = '@ViewBag.Success';
-            if (success != '')
+            const success = '@ViewBag.Success';
+            if (success !== "")
                 toastr.success(success);
 
-            error = '@ViewBag.Error';
+            const error = '@ViewBag.Error';
             if (error != '')
                 toastr.error(error);
         });

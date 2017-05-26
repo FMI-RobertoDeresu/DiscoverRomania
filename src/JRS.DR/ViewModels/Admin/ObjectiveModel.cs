@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using JRS.DR.WsModels;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace JRS.DR.ViewModels.Admin
 {
@@ -13,14 +10,10 @@ namespace JRS.DR.ViewModels.Admin
         [Display(Name = "Limba obiectivului")]
         public int? LanguageId { get; set; }
 
-        public List<SelectListItem> Languages { get; set; }
-
         [Required(ErrorMessage = "Categoria obiectivului este camp obligatoriu!")]
         [Display(Name = "Categoria obiectivului")]
         public int? ObjectiveTypeId { get; set; }
 
-        public List<SelectListItem> ObjectiveTypes { get; set; }
-        
         [Required(ErrorMessage = "Denumirea obiectivului este camp obligatoriu!")]
         [Display(Name = "Denumirea obiectivului")]
         public string Name { get; set; }
@@ -32,11 +25,11 @@ namespace JRS.DR.ViewModels.Admin
         [Required(ErrorMessage = "URL Imagine obiectiv este camp obligatoriu!")]
         [Display(Name = "URL Imagine obiectiv")]
         public string Picture { get; set; }
-        
+
         [Display(Name = "Descriere ampla")]
         public string Html { get; set; }
 
         [Display(Name = "Locatie")]
-        public Location Location { get; set; }
+        public LocationModel Location { get; set; }
     }
 }

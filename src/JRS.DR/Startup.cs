@@ -100,7 +100,7 @@ namespace JRS.DR
             app.ConfigureNLog(env, loggerFactory, Configuration["db:default"]);
 
             //env options
-            if (!env.IsDevelopment())
+            if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
             else
                 app.UseExceptionHandler("/error");
