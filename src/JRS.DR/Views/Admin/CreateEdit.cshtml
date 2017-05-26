@@ -65,7 +65,10 @@
 
 @section scripts{
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
+            var langId = 1; // parseInt('@Model.LanguageId');
+            var objTypeId = parseInt('@Model.ObjectiveTypeId');
+
             $('#summernote').summernote({ height: 200 });
 
             $("#createObjectiveForm").submit(function(e) {
@@ -73,11 +76,66 @@
                 $('#Html').val($('#summernote').summernote('code'));
                 this.submit();
             });
+
+            function getLanguages() {
+                $.ajax({
+                    url: "/Admin/GetLanguages",
+                    type: "GET",
+                    data: {},
+                    dataType: "json",
+                    success: function (res) {
+                        for (var i = 0; i < res.length; i++) {
+                            $('#LanguageId').append('<option value=' + res[i].id + '>' + res[i].name + '</option>');
+                        }
+                        if (langId) { // on edit
+                            $('#LanguageId').val(langId);
+                            getObjectiveTypes(langId);
+                            langId = null;
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        toastr.error('A aparut o eroare');
+                    }
+                });
+            }
+
+            $('#LanguageId').change(function () {
+                var languageId = $('#LanguageId').val();
+                getObjectiveTypes(languageId);
+            });
+
+            function getObjectiveTypes(languageId) {
+                $("#ObjectiveTypeId option").remove();
+                $('#ObjectiveTypeId').append('<option value="">Alegeti categoria obiectivului</option>');
+                $.ajax({
+                    url: "/Admin/GetObjectiveTypes",
+                    type: "GET",
+                    data: { 'languageId': languageId },
+                    dataType: "json",
+                    success: function (res) {
+                        for (var i = 0; i < res.length; i++) {
+                            $('#ObjectiveTypeId').append('<option value=' + res[i].id + '>' + res[i].name + '</option>');
+                        }
+                        if (objTypeId) { // on edit
+                            $('#ObjectiveTypeId').val(objTypeId);
+                            objTypeId = null;
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        toastr.error('A aparut o eroare');
+                    }
+                });
+            }
+
+            getLanguages();
+            $('#summernote').summernote('code', $('#Html').val()); // on edit
         });
     </script>
     <script>
         var map;
         var markers = [];
+        var lat = $('#Location_X').val();
+        var lng = $('#Location_Y').val();
 
         function initMap() {
             map = new window.google.maps.Map(document.getElementById('map'), {
@@ -100,6 +158,17 @@
                 markers.push(marker);
                 $('#Location_X').val(latLng.lat());
                 $('#Location_Y').val(latLng.lng());
+            }
+
+            if (lat && lng) { // on edit
+                var myLatLng = { lat: parseFloat(lat), lng: parseFloat(lng) };
+                lat = null;
+                lng = null;
+                var marker = new window.google.maps.Marker({
+                    position: myLatLng,
+                    map: map
+                });
+                markers.push(marker);
             }
 
             function setMapOnAll(map) {

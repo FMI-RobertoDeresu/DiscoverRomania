@@ -131,6 +131,7 @@ namespace JRS.DR.Controllers
                 if (!getObjectiveResponse.IsError && !getObjectiveHtmlResponse.IsError)
                 {
                     var objectiveModel = Mapper.Map<ObjectiveModel>(getObjectiveResponse.Objective);
+                    objectiveModel.ObjectiveTypeId = getObjectiveResponse.Objective.Type.Id;
                     objectiveModel.Html = getObjectiveHtmlResponse.Html;
                     return View("CreateEdit", objectiveModel);
                 }
