@@ -2,11 +2,15 @@
 {
     public class ObjectiveResponse
     {
-        public int? Id { get; set; }
+        public int Id { get; set; }
 
         public string Name { get; set; }
 
-        public LocationResponse Location { get; set; }
+        public string Description { get; set; }
+
+        public string Picture { get; set; }
+
+        public Location Location { get; set; }
 
         public ObjectiveTypeResponse Type { get; set; }
     }

@@ -7,8 +7,7 @@ namespace JRS.DR.DbContexts.ModelsConfigs
     {
         public static void ConfigureLocation(this ModelBuilder modelBuilder)
         {
-            var entityBuilder = modelBuilder.Entity<Location>();
-            entityBuilder.ToTable("Location");
+            modelBuilder.Entity<Location>().ToTable("Location").HasKey(x => x.Id);
         }
     }
 }

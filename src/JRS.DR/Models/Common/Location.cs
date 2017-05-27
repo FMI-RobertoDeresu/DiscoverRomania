@@ -10,8 +10,8 @@
             Y = y;
         }
 
-        public decimal X { get; protected set; }
+        public decimal X { get; set; }
 
-        public decimal Y { get; protected set; }
+        public decimal Y { get; set; }
     }
 }

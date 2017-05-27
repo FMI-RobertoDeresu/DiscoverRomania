@@ -1,0 +1,47 @@
+﻿html {
+    min-height: 100%;
+    position: relative;
+}
+
+body {
+    margin: 0 0 25px;
+}
+
+.footer {
+    background-color: #eeeeee;
+    bottom: 0;
+    clear: both;
+    display: block;
+    left: 0;
+    padding: 15px;
+    position: absolute;
+    right: 0;
+}
+
+#map {
+    height: 500px;
+}
+
+.pagination {
+    margin: 0;
+}
+
+.panel-body > table.table {
+    margin-bottom: 0;
+}
+
+.row.section {
+    margin-bottom: 10px;
+}
+
+.pointer-none {
+    pointer-events: none;
+}
+
+.m-l-15 {
+    margin-left: 15px;
+}
+
+.validation-summary-errors ul {
+    list-style: none;
+}

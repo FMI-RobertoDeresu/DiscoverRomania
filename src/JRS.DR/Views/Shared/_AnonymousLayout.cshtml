@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="keywords" content="Romania, Disconver, Points of interest">
+    <meta name="description" content="Discover Romania. Habits and traditions, historical events, points of interest, etc.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <title>JRS - DR</title>
+    <link rel="icon" type="image/png" href="~/favicon.png"/>
+
+    <environment Names="Development">
+        <link asp-append-version="true" rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css"/>
+        <link asp-append-version="true" rel="stylesheet" href="~/css/app.css"/>
+    </environment>
+    <environment Names="Staging,Production">
+        <link asp-append-version="true" rel="stylesheet" href="~/css/site.anonymous.min.css"/>
+    </environment>
+</head>
+<body>
+    @RenderBody()
+
+    <environment Names="Development">
+        <script asp-append-version="true" src="~/lib/jquery/dist/jquery.js"></script>
+    </environment>
+    <environment Names="Staging,Production">
+        <script asp-append-version="true" src="~/js/site.anonymous.min.js"></script>
+    </environment>
+
+    @RenderSection("scripts", false)
+</body>
+</html>

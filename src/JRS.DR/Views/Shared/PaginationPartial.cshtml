@@ -1,0 +1,36 @@
+﻿@model JRS.DR.Contracts.IPagedList
+
+@if (Model.TotalCount > Model.PageSize)
+{
+    if (!((bool?) ViewBag.OnlyPaginationButtons ?? false))
+    {
+        <div>
+            <p>@Html.Raw(Model.TotalDisplay())</p>
+        </div>
+    }
+    <ul class="pagination">
+        <li>
+            <a href="@Model.FirstPageLink(Context)">
+                <i class="fa fa-step-backward" aria-hidden="true"></i>
+            </a>
+        </li>
+        <li>
+            <a href="@Model.PrevPageLink(Context)">
+                <i class="fa fa-chevron-left" aria-hidden="true"></i>
+            </a>
+        </li>
+        <li>
+            <span class="pointer-none">@Html.Raw(Model.PageInfoDisplay())</span>
+        </li>
+        <li>
+            <a href="@Model.NextPageLink(Context)">
+                <i class="fa fa-chevron-right" aria-hidden="true"></i>
+            </a>
+        </li>
+        <li>
+            <a href="@Model.LastPageLink(Context)">
+                <i class="fa fa-step-forward" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+}

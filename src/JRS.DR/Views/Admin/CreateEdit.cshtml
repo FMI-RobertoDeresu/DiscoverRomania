@@ -1,0 +1,78 @@
+﻿@model JRS.DR.ViewModels.Admin.ObjectiveModel
+@{
+    ViewBag.Title = "Create";
+}
+<div class="row">
+    <div class="col col-xs-12">
+        <a class="btn btn-primary pull-right" href="@Url.Action("LogOut", "Admin")">Deconectare</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <a class="btn btn-danger m-l-15" href="javascript:history.go(-1)">Inapoi</a>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <br/>
+                @using (Html.BeginForm(Model.ObjectiveId.HasValue ? "Edit" : "Create", "Admin", FormMethod.Post, new { id = "createObjectiveForm" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(false, string.Empty, new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.ObjectiveId)
+                    @Html.HiddenFor(model => model.Html)
+                    @Html.HiddenFor(model => model.Location.X)
+                    @Html.HiddenFor(model => model.Location.Y)
+
+                    <div class="col-xs-12 col-md-4 form-group">
+                        @Html.LabelFor(m => m.LanguageId, new { @class = "control-label" })
+                        @Html.ValidationMessageFor(m => m.LanguageId, "", new { @class = "text-danger" })
+                        @Html.DropDownListFor(m => m.LanguageId, 
+                            new SelectList(new List<SelectListItem>(), "Value", "Text"), 
+                            "Alegeti limba obiectivului", 
+                            new { @class = "form-control", data_value = Model.LanguageId })
+                    </div>
+                    <div class="col-xs-12 col-md-4 form-group">
+                        @Html.LabelFor(m => m.ObjectiveTypeId, new { @class = "control-label" })
+                        @Html.ValidationMessageFor(m => m.ObjectiveTypeId, "", new { @class = "text-danger" })
+                        @Html.DropDownListFor(m => m.ObjectiveTypeId,
+                            new SelectList(new List<SelectListItem>(), "Value", "Text"),
+                            "Alegeti categoria obiectivului",
+                            new { @class = "form-control", data_value = Model.ObjectiveTypeId })
+                    </div>
+                    <div class="col-xs-12 col-md-4 form-group">
+                        @Html.LabelFor(m => m.Name, new { @class = "control-label" })<br/>
+                        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                    </div>
+                    <div class="col-xs-12 form-group">
+                        @Html.LabelFor(m => m.Description, new { @class = "control-label required" })<br/>
+                        @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+                        @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
+                    </div>
+                    <div class="col-xs-12 form-group">
+                        @Html.LabelFor(m => m.Html, new { @class = "control-label" })<br/>
+                        <div id="summernote" class="summernote"></div>
+                    </div>
+                    <div class="col-xs-12 form-group">
+                        @Html.LabelFor(m => m.Location, new { @class = "control-label" })<br/>
+                        @Html.ValidationMessageFor(m => m.Location, "", new { @class = "text-danger" })
+                        <div id="map"></div>
+                    </div>
+                    <div class="col-xs-12 form-group">
+                        <br/>
+                        <button type="submit" class="btn btn-success">
+                            @(Model.ObjectiveId.HasValue ? "Modifica obiectiv" : "Salveaza obiectiv")
+                        </button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAgdztzg0KH-LQwK5nRKxXq-fcwViT8dMQ&callback=initMap"></script>
+}

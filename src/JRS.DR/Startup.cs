@@ -4,7 +4,6 @@ using JRS.DR.Extensions;
 using JRS.DR.Filters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -54,7 +53,6 @@ namespace JRS.DR
                         options.SerializerSettings.Formatting = Formatting.Indented;
                         options.SerializerSettings.Converters.Add(new StringEnumConverter());
                     });
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             //swagger
             services.AddSwaggerGen(
@@ -78,6 +76,10 @@ namespace JRS.DR
                     options.CreateMissingTypeMaps = true;
                     options.AllowNullCollections = true;
                 });
+
+            //session
+            services.AddDistributedMemoryCache();
+            services.AddSession();
 
             //config
             services.AddSingleton(Configuration);
@@ -103,19 +105,20 @@ namespace JRS.DR
             else
                 app.UseExceptionHandler("/error");
 
+            //status code pages
+            app.UseStatusCodePagesWithRedirects("/error/code/{0}");
+
             //static files
             app.UseStaticFiles();
 
             //cors
             app.UseCors("cors");
 
+            //session
+            app.UseSession();
+
             //mvc
-            app.UseMvc(
-                routes =>
-                {
-                    routes.MapRoute("error", "error", new { controller = "home", action = "error" });
-                    routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
-                });
+            app.UseMvc(routes => routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}"));
 
             //swagger
             app.UseSwagger();

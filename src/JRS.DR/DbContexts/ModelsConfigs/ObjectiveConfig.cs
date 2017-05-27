@@ -7,10 +7,10 @@ namespace JRS.DR.DbContexts.ModelsConfigs
     {
         public static void ConfigureObjective(this ModelBuilder modelBuilder)
         {
-            var objectiveBuilder = modelBuilder.Entity<Objective>();
-            objectiveBuilder.ToTable("Objective");
-            objectiveBuilder.Ignore("Status").Property("_status").HasColumnName("Status");
-            objectiveBuilder.HasOne(x => x.Type).WithOne().HasForeignKey("Objective", "ObjectiveTypeId");
+            modelBuilder.Entity<Objective>().ToTable("Objective").HasKey(x => x.Id);
+            modelBuilder.Entity<Objective>().Property("_status").HasColumnName("Status");
+            modelBuilder.Entity<Objective>().HasOne(x => x.Type).WithOne().HasForeignKey("Objective", "ObjectiveTypeId");
+            modelBuilder.Entity<Objective>().Ignore("Status");
         }
     }
 }

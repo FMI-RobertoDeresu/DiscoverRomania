@@ -1,0 +1,13 @@
+﻿@{
+    ViewBag.Title = "Auth";
+}
+<link rel="stylesheet" href="~/css/auth.css">
+
+<div class="wrapper">
+    <form asp-action="Auth" asp-controller="Admin" method="post" class="form-signin">
+        <h2 class="form-signin-heading">Please login</h2>
+        <input type="password" class="form-control" name="password" placeholder="Password" required="required" />
+        <br />
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+    </form>
+</div>

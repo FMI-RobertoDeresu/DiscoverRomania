@@ -36,22 +36,11 @@ namespace JRS.DR.Controllers
 
         [HttpPost("api/objectiveTypes")]
         [Produces(typeof(GetObjectiveTypesResponse))]
-        public IActionResult GetObjectiveTypes()
+        public IActionResult GetObjectiveTypes([FromBody] GetObjectiveTypesRequest request)
         {
-            return ApiCore<GetObjectiveTypesResponse>(ModelState, output =>
+            return ApiCore<GetObjectiveTypesRequest, GetObjectiveTypesResponse>(request, ModelState, (intput, output) =>
             {
-                var outputData = _apiService.GetObjectiveTypes();
-                output = Mapper.Map(outputData, output);
-            });
-        }
-
-        [HttpPost("api/objectives")]
-        [Produces(typeof(GetObjectivesResponse))]
-        public IActionResult GetObjectives([FromBody] GetObjectivesRequest request)
-        {
-            return ApiCore<GetObjectivesRequest, GetObjectivesResponse>(request, ModelState, (input, output) =>
-            {
-                var outputData = _apiService.GetObjectives(input);
+                var outputData = _apiService.GetObjectiveTypes(intput);
                 output = Mapper.Map(outputData, output);
             });
         }
@@ -67,6 +56,17 @@ namespace JRS.DR.Controllers
             });
         }
 
+        [HttpPost("api/objectives")]
+        [Produces(typeof(GetObjectivesResponse))]
+        public IActionResult GetObjectives([FromBody] GetObjectivesRequest request)
+        {
+            return ApiCore<GetObjectivesRequest, GetObjectivesResponse>(request, ModelState, (input, output) =>
+            {
+                var outputData = _apiService.GetObjectives(input);
+                output = Mapper.Map(outputData, output);
+            });
+        }
+
         [HttpPost("api/objectiveHtml")]
         [Produces(typeof(GetObjectiveHtmlResponse))]
         public IActionResult GetObjectiveHtml([FromBody] GetObjectiveHtmlRequest request)
@@ -78,12 +78,48 @@ namespace JRS.DR.Controllers
             });
         }
 
+        [HttpPost("api/createObjective")]
+        [Produces(typeof(CreateObjectiveResponse))]
+        public IActionResult CreateObjective([FromBody] CreateObjectiveRequest request)
+        {
+            return ApiCore<CreateObjectiveRequest, CreateObjectiveResponse>(request, ModelState, (input, output) =>
+            {
+                var outputData = _apiService.CreateObjective(input);
+                output = Mapper.Map(outputData, output);
+            });
+        }
+
+        [HttpPost("api/editObjective")]
+        [Produces(typeof(EditObjectiveResponse))]
+        public IActionResult EditObjective([FromBody] EditObjectiveRequest request)
+        {
+            return ApiCore<EditObjectiveRequest, EditObjectiveResponse>(request, ModelState, (input, output) =>
+            {
+                var outputData = _apiService.EditObjective(input);
+                output = Mapper.Map(outputData, output);
+            });
+        }
+
+        [HttpPost("api/deleteObjective")]
+        [Produces(typeof(DeleteObjectiveResponse))]
+        public IActionResult DeleteObjective([FromBody] DeleteObjectiveRequest request)
+        {
+            return ApiCore<DeleteObjectiveRequest, DeleteObjectiveResponse>(request, ModelState, (input, output) =>
+            {
+                var outputData = _apiService.DeleteObjective(input);
+                output = Mapper.Map(outputData, output);
+            });
+        }
+
         //utils
         private IActionResult ApiCore<TInput, TOutput>(TInput input, ModelStateDictionary modelState,
             Action<TInput, TOutput> coreAction)
+            where TInput : new()
             where TOutput : ApiResponseBase, new()
         {
             var output = new TOutput();
+            if (input == null)
+                input = new TInput();
 
             try
             {
