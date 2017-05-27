@@ -46,8 +46,8 @@
                                 <td>@item.Description</td>
                                 <td>
                                     <div>
-                                        <a class="btn btn-primary" href="@Url.Action("Edit", "Admin", new { objectiveId = item.ObjectiveId })">Edit</a>
-                                        <a class="btn btn-danger" onclick="window.openDeleteObjectiveModal(@item.ObjectiveId);">Delete</a>
+                                        <a class="btn btn-sm btn-primary" href="@Url.Action("Edit", "Admin", new { objectiveId = item.ObjectiveId })">Edit</a>
+                                        <a class="btn btn-sm btn-danger" onclick="window.openDeleteObjectiveModal(@item.ObjectiveId);">Delete</a>
                                     </div>
                                 </td>
                             </tr>

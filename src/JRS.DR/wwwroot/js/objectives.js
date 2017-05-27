@@ -1,6 +1,6 @@
 ﻿"use strict";
 
-(function () {
+(function() {
 
     var objectiveId;
 
@@ -11,10 +11,15 @@
 
     function deleteObjective() {
         $.ajax({
-            url: `/Admin/Delete/${objectiveId}`,
-            type: "DELETE",
-            contentType: "application/json",
+            url: "/admin/delete",
+            type: "delete",
+            data: { objectiveId: objectiveId },
             success: function(res) {
+                if (res.isError === undefined) {
+                    toastr.error("A aparut o eroare!");
+                    return;
+                }
+
                 if (res.isError === true) {
                     toastr.error(res.messages[0]);
                     return;

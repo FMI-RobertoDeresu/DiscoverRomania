@@ -41,3 +41,7 @@ body {
 .m-l-15 {
     margin-left: 15px;
 }
+
+.validation-summary-errors ul {
+    list-style: none;
+}

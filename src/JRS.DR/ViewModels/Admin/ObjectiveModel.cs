@@ -7,29 +7,25 @@ namespace JRS.DR.ViewModels.Admin
         public int? ObjectiveId { get; set; }
 
         [Required(ErrorMessage = "Limba obiectivului este camp obligatoriu!")]
-        [Display(Name = "Limba obiectivului")]
+        [Display(Name = "Limba")]
         public int? LanguageId { get; set; }
 
         [Required(ErrorMessage = "Categoria obiectivului este camp obligatoriu!")]
-        [Display(Name = "Categoria obiectivului")]
+        [Display(Name = "Categoria")]
         public int? ObjectiveTypeId { get; set; }
 
         [Required(ErrorMessage = "Denumirea obiectivului este camp obligatoriu!")]
-        [Display(Name = "Denumirea obiectivului")]
+        [Display(Name = "Denumirea")]
         public string Name { get; set; }
 
         [Required(ErrorMessage = "Descrierea obiectivului este camp obligatoriu!")]
-        [Display(Name = "Descrierea obiectivului")]
+        [Display(Name = "Descrierea")]
         public string Description { get; set; }
-
-        [Required(ErrorMessage = "URL Imagine obiectiv este camp obligatoriu!")]
-        [Display(Name = "URL Imagine obiectiv")]
-        public string Picture { get; set; }
 
         [Display(Name = "Descriere ampla")]
         public string Html { get; set; }
 
-        [Display(Name = "Locatie")]
+        [Display(Name = "Selectati locatia")]
         public LocationModel Location { get; set; }
     }
 }

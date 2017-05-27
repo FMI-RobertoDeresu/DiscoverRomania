@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using AutoMapper;
 using JRS.DR.Contracts;
+using JRS.DR.Exceptions;
 using JRS.DR.Extensions;
 using JRS.DR.Models;
 using JRS.DR.ViewModels.Admin;
@@ -113,6 +114,11 @@ namespace JRS.DR.Controllers
                 response.Messages.ForEach(x => ModelState.AddModelError("", x));
                 return View("CreateEdit", model);
             }
+            catch (ApiException exception)
+            {
+                exception.Errors.ForEach(x => ModelState.AddModelError("", x));
+                return View("CreateEdit", model);
+            }
             catch (Exception exception)
             {
                 _applicationLogger.LogError(exception);
@@ -175,6 +181,11 @@ namespace JRS.DR.Controllers
                 response.Messages.ForEach(x => ModelState.AddModelError("", x));
                 return View("CreateEdit", model);
             }
+            catch (ApiException exception)
+            {
+                exception.Errors.ForEach(x => ModelState.AddModelError("", x));
+                return View("CreateEdit", model);
+            }
             catch (Exception exception)
             {
                 _applicationLogger.LogError(exception);
@@ -196,10 +207,14 @@ namespace JRS.DR.Controllers
                 var response = _apiService.DeleteObjective(request);
                 return Json(response);
             }
+            catch (ApiException exception)
+            {
+                return Json(new { IsError = true, Messages = new[] { exception.Errors } });
+            }
             catch (Exception exception)
             {
                 _applicationLogger.LogError(exception);
-                return Json(new { IsError = true, Messages = new[] { exception.Message } });
+                return Json(new { IsError = true, Messages = new[] { GenericErrorMessage } });
             }
         }
 
