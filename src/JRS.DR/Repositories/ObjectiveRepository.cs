@@ -51,14 +51,18 @@ namespace JRS.DR.Repositories
             return result;
         }
 
-        public IEnumerable<Objective> GetPaged(int page, int pageSize)
+        public IEnumerable<ObjectiveLight> GetPaged(int page, int pageSize)
         {
             var result = QueryAll()
                 .OrderBy(x => x.Name)
-                .Include(x => x.Location)
-                .Include(x => x.Type)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
+                .Select(x => new ObjectiveLight()
+                {
+                    Id = x.Id,
+                    Name =  x.Name,
+                    Description = x.Description
+                })
                 .ToList();
 
             return result;

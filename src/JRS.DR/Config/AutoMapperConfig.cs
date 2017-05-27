@@ -29,6 +29,8 @@ namespace JRS.DR.Config
             CreateMap<ObjectiveType, ObjectiveTypeModel>();
 
             //domain models -> view models
+            CreateMap<ObjectiveLight, ObjectiveModel>()
+                .ForMember(dest => dest.ObjectiveId, map => map.MapFrom(src => src.Id));
             CreateMap<Objective, ObjectiveModel>()
                 .ForMember(dest => dest.ObjectiveId, map => map.MapFrom(src => src.Id))
                 .ForMember(dest => dest.LanguageId, map => map.MapFrom(src => src.Language.Id))

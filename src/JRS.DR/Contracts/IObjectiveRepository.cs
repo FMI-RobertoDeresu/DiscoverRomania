@@ -6,6 +6,6 @@ namespace JRS.DR.Contracts
     public interface IObjectiveRepository : IRepository<int, Objective>
     {
         int CountAll();
-        IEnumerable<Objective> GetPaged(int page, int pageSize);
+        IEnumerable<ObjectiveLight> GetPaged(int page, int pageSize);
     }
 }
