@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 namespace JRS.DR.Controllers
 {
     [Route("admin")]
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class AdminController : AppBaseController
     {
         private readonly IApiService _apiService;
