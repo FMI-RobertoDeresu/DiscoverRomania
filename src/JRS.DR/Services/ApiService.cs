@@ -163,7 +163,7 @@ namespace JRS.DR.Services
             objective.Picture = input.Objective.Picture;
             objective.Html = input.Objective.Html;
             objective.Location.X = input.Objective.Location.X.Value;
-            objective.Location.X = input.Objective.Location.Y.Value;
+            objective.Location.Y = input.Objective.Location.Y.Value;
 
             _objectiveRepository.Update(objective);
             _objectiveRepository.SaveChanges();

@@ -19,9 +19,13 @@
 </head>
 <body>
     @RenderBody()
+    
+    <script asp-append-version="true">window.apiurl = "@Url.Content("~")/api"</script>
+    <script asp-append-version="true" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCI8T6eYBM3X-yuccXgpy-NBHS4qon_bvw" async defer="defer"></script>
 
     <environment Names="Development">
         <script asp-append-version="true" src="~/lib/jquery/dist/jquery.js"></script>
+        <script asp-append-version="true" src="~/js/reactMain.js"></script>
     </environment>
     <environment Names="Staging,Production">
         <script asp-append-version="true" src="~/js/site.anonymous.min.js"></script>
