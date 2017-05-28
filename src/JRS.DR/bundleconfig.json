@@ -40,7 +40,8 @@
   {
     "outputFileName": "wwwroot/js/site.anonymous.min.js",
     "inputFiles": [
-      "wwwroot/lib/jquery/dist/jquery.min.js"
+      "wwwroot/lib/jquery/dist/jquery.min.js",
+      "wwwroot/js/reactMain.js"
     ],
     "minify": {
       "enabled": true
