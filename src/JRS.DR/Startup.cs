@@ -35,10 +35,6 @@ namespace JRS.DR
             //entity framework
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration["db:default"]));
 
-            //cors
-            services.AddCors(
-                options => options.AddPolicy("cors", policy => policy.AllowAnyOrigin()));
-
             //mvc
             services.AddMvc(
                     options =>
@@ -106,13 +102,10 @@ namespace JRS.DR
                 app.UseExceptionHandler("/error");
 
             //status code pages
-            app.UseStatusCodePagesWithRedirects("/error/code/{0}");
+            app.UseStatusCodePagesWithReExecute("/error/code/{0}");
 
             //static files
             app.UseStaticFiles();
-
-            //cors
-            app.UseCors("cors");
 
             //session
             app.UseSession();
