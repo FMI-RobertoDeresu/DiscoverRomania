@@ -7,7 +7,6 @@ namespace JRS.DR.Controllers
     public class AppBaseController : Controller
     {
         private const string IsSecureSessionKey = "IsSecureSession";
-        private const string GenericError = "Ne pare rau, a aparut o eroare in timpul precesarii.";
 
         private readonly IConfigurationRoot _configuration;
 
@@ -16,7 +15,7 @@ namespace JRS.DR.Controllers
             _configuration = configuration;
         }
 
-        protected string GenericErrorMessage => GenericError;
+        protected string GenericErrorMessage => _configuration["app:genericErrorMessage"];
 
         protected bool IsAuthenticated => HttpContext.Session.GetString(IsSecureSessionKey) == "true";
 
