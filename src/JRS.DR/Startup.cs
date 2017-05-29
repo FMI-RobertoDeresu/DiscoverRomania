@@ -4,6 +4,7 @@ using JRS.DR.Extensions;
 using JRS.DR.Filters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,8 +24,11 @@ namespace JRS.DR
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", true, true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true)
-                .AddUserSecrets("jrsdrsecrets")
                 .AddEnvironmentVariables();
+
+            if (env.IsDevelopment())
+                builder = builder.AddUserSecrets("jrsdrsecrets");
+
             Configuration = builder.Build();
         }
 
@@ -39,8 +43,13 @@ namespace JRS.DR
             services.AddMvc(
                     options =>
                     {
-                        options.Filters.Add(typeof(ApplicationExceptionFilter));
-                        options.Filters.Add(typeof(RequestHistoryLogFilterAttribute));
+                        options.Filters.Add(new RequireHttpsAttribute { Permanent = true });
+
+                        if (bool.Parse(Configuration["app:applicationExceptionFilterEnabled"]))
+                            options.Filters.Add(typeof(ApplicationExceptionFilter));
+
+                        if (bool.Parse(Configuration["app:requestHistoryLogFilterEnabled"]))
+                            options.Filters.Add(typeof(RequestHistoryLogFilterAttribute));
                     })
                 .AddJsonOptions(
                     options =>
