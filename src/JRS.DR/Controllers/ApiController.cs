@@ -15,12 +15,14 @@ namespace JRS.DR.Controllers
         private readonly IConfigurationRoot _configuration;
         private readonly IApplicationLogger _appLogger;
         private readonly IApiService _apiService;
+        private readonly IMapper _mapper;
 
-        public ApiController(IConfigurationRoot configuration, IApplicationLogger appLogger, IApiService apiService)
+        public ApiController(IConfigurationRoot configuration, IApplicationLogger appLogger, IApiService apiService, IMapper mapper)
         {
             _configuration = configuration;
             _appLogger = appLogger;
             _apiService = apiService;
+            _mapper = mapper;
         }
 
         [HttpPost("api/languages")]
@@ -30,7 +32,7 @@ namespace JRS.DR.Controllers
             return ApiCore<GetLanguagesResponse>(ModelState, output =>
             {
                 var outputData = _apiService.GetLanguages();
-                output = Mapper.Map(outputData, output);
+                output = _mapper.Map(outputData, output);
             });
         }
 
@@ -41,7 +43,7 @@ namespace JRS.DR.Controllers
             return ApiCore<GetObjectiveTypesRequest, GetObjectiveTypesResponse>(request, ModelState, (intput, output) =>
             {
                 var outputData = _apiService.GetObjectiveTypes(intput);
-                output = Mapper.Map(outputData, output);
+                output = _mapper.Map(outputData, output);
             });
         }
 
@@ -52,7 +54,7 @@ namespace JRS.DR.Controllers
             return ApiCore<GetObjectiveRequest, GetObjectiveResponse>(request, ModelState, (input, output) =>
             {
                 var outputData = _apiService.GetObjective(input);
-                output = Mapper.Map(outputData, output);
+                output = _mapper.Map(outputData, output);
             });
         }
 
@@ -63,7 +65,7 @@ namespace JRS.DR.Controllers
             return ApiCore<GetObjectivesRequest, GetObjectivesResponse>(request, ModelState, (input, output) =>
             {
                 var outputData = _apiService.GetObjectives(input);
-                output = Mapper.Map(outputData, output);
+                output = _mapper.Map(outputData, output);
             });
         }
 
@@ -74,7 +76,7 @@ namespace JRS.DR.Controllers
             return ApiCore<GetObjectiveHtmlRequest, GetObjectiveHtmlResponse>(request, ModelState, (input, output) =>
             {
                 var outputData = _apiService.GetObjectiveHtml(input);
-                output = Mapper.Map(outputData, output);
+                output = _mapper.Map(outputData, output);
             });
         }
 
@@ -85,7 +87,7 @@ namespace JRS.DR.Controllers
             return ApiCore<CreateObjectiveRequest, CreateObjectiveResponse>(request, ModelState, (input, output) =>
             {
                 var outputData = _apiService.CreateObjective(input);
-                output = Mapper.Map(outputData, output);
+                output = _mapper.Map(outputData, output);
             });
         }
 
@@ -96,7 +98,7 @@ namespace JRS.DR.Controllers
             return ApiCore<EditObjectiveRequest, EditObjectiveResponse>(request, ModelState, (input, output) =>
             {
                 var outputData = _apiService.EditObjective(input);
-                output = Mapper.Map(outputData, output);
+                output = _mapper.Map(outputData, output);
             });
         }
 
@@ -107,7 +109,7 @@ namespace JRS.DR.Controllers
             return ApiCore<DeleteObjectiveRequest, DeleteObjectiveResponse>(request, ModelState, (input, output) =>
             {
                 var outputData = _apiService.DeleteObjective(input);
-                output = Mapper.Map(outputData, output);
+                output = _mapper.Map(outputData, output);
             });
         }
 

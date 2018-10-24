@@ -16,7 +16,7 @@ namespace JRS.DR.Contracts
 
         TEntity Get(TKey key);
         TEntity Get(Expression<Func<TEntity, bool>> where);
-        IEnumerable<TEntity> GetMany(Expression<Func<TEntity, bool>> where);
+        IEnumerable<TEntity> GetMany(Expression<Func<TEntity, bool>> where, params Expression<Func<TEntity, object>>[] includes);
         IEnumerable<TEntity> GetAll();
 
         void SaveChanges();

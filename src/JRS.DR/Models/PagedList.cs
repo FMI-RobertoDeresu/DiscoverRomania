@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using JRS.DR.Contracts;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace JRS.DR.Models
 {
@@ -36,40 +38,46 @@ namespace JRS.DR.Models
             return $"Pagina <strong>{Page}</strong> din <strong>{TotalPages}</strong>";
         }
 
-        public string NextPageLink(HttpContext httpContext)
+        public string NextPageLink(HttpContext httpContext, IUrlHelper url)
         {
             var page = GetPageOrDefault(httpContext.Request.Query);
-            var path = httpContext.Request.Path;
+            var path = RequestPath(httpContext);
             return page < TotalPages
                 ? $"{path}?page={page + 1}&persistentCount={TotalCount}"
                 : "#";
         }
 
-        public string PrevPageLink(HttpContext httpContext)
+        public string PrevPageLink(HttpContext httpContext, IUrlHelper url)
         {
             var page = GetPageOrDefault(httpContext.Request.Query);
-            var path = httpContext.Request.Path;
+            var path = RequestPath(httpContext);
             return page > 1
                 ? $"{path}?page={page - 1}&persistentCount={TotalCount}"
                 : "#";
         }
 
-        public string FirstPageLink(HttpContext httpContext)
+        public string FirstPageLink(HttpContext httpContext, IUrlHelper url)
         {
             var page = GetPageOrDefault(httpContext.Request.Query);
-            var path = httpContext.Request.Path;
+            var path = RequestPath(httpContext);
             return page > 1
                 ? $"{path}?page={1}&persistentCount={TotalCount}"
                 : "#";
         }
 
-        public string LastPageLink(HttpContext httpContext)
+        public string LastPageLink(HttpContext httpContext, IUrlHelper url)
         {
             var page = GetPageOrDefault(httpContext.Request.Query);
-            var path = httpContext.Request.Path;
+            var path = RequestPath(httpContext);
             return page < TotalPages
-                ? $"{path}?page={TotalPages}&persistentCount={TotalCount}"
+                ?  $"{path}?page={TotalPages}&persistentCount={TotalCount}"
                 : "#";
+        }
+
+        private static PathString RequestPath(HttpContext httpContext)
+        {
+            var path = (httpContext.Request.PathBase + httpContext.Request.Path).Value.Replace("//", "/");
+            return path;
         }
 
         public int PagedIndexOf(T item)

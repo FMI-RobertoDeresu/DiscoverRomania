@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace JRS.DR.Contracts
 {
@@ -14,12 +15,12 @@ namespace JRS.DR.Contracts
 
         string PageInfoDisplay();
 
-        string NextPageLink(HttpContext httpContext);
+        string NextPageLink(HttpContext httpContext, IUrlHelper url);
 
-        string PrevPageLink(HttpContext httpContext);
+        string PrevPageLink(HttpContext httpContext, IUrlHelper url);
 
-        string FirstPageLink(HttpContext httpContext);
+        string FirstPageLink(HttpContext httpContext, IUrlHelper url);
 
-        string LastPageLink(HttpContext httpContext);
+        string LastPageLink(HttpContext httpContext, IUrlHelper url);
     }
 }

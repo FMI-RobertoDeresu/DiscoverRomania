@@ -60,7 +60,7 @@ namespace JRS.DR.Controllers
             if (IsAuthenticated)
                 return RedirectToAction("Index");
 
-            Authenticate(password);
+            SignIn(password);
 
             if (!IsAuthenticated)
             {
@@ -74,7 +74,7 @@ namespace JRS.DR.Controllers
         [HttpGet("logout")]
         public IActionResult LogOut()
         {
-            Deauthenticate();
+            SignOut();
             return RedirectToAction("Auth");
         }
 

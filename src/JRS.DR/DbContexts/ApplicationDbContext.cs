@@ -13,6 +13,7 @@ namespace JRS.DR.DbContexts
             modelBuilder.ConfigureLocation();
             modelBuilder.ConfigureObjective();
             modelBuilder.ConfigureObjectiveType();
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

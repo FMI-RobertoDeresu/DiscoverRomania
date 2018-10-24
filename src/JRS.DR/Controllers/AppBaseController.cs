@@ -21,13 +21,13 @@ namespace JRS.DR.Controllers
 
         protected string SessionPassword => IsAuthenticated ? _configuration["password-manager"] : string.Empty;
 
-        protected void Authenticate(string password)
+        protected void SignIn(string password)
         {
             if (_configuration["password-manager"] == password)
                 HttpContext.Session.SetString(IsSecureSessionKey, "true");
         }
 
-        protected void Deauthenticate()
+        protected void SignOut()
         {
             HttpContext.Session.Remove(IsSecureSessionKey);
         }

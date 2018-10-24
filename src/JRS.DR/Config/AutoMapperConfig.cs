@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using JRS.DR.Models.Common;
 using JRS.DR.ViewModels.Admin;
 using JRS.DR.WsModels;
@@ -29,6 +30,9 @@ namespace JRS.DR.Config
             CreateMap<ObjectiveType, ObjectiveTypeModel>();
 
             //domain models -> view models
+            CreateMap<Objective, GetObjectiveHtmlResponse>()
+                .ForMember(dest => dest.IsError, map => map.Ignore())
+                .ForMember(dest => dest.Messages, map => map.Ignore());
             CreateMap<ObjectiveLight, ObjectiveModel>()
                 .ForMember(dest => dest.ObjectiveId, map => map.MapFrom(src => src.Id));
             CreateMap<Objective, ObjectiveModel>()

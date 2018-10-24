@@ -30,13 +30,15 @@ namespace JRS.DR.Repositories
             return result;
         }
 
-        public override IEnumerable<Objective> GetMany(Expression<Func<Objective, bool>> where)
+        public override IEnumerable<Objective> GetMany(Expression<Func<Objective, bool>> where, params Expression<Func<Objective, object>>[] includes)
         {
-            var result = QueryAll()
+            var query = QueryAll()
                 .Include(x => x.Location)
                 .Include(x => x.Type)
-                .Where(where)
-                .ToList();
+                .Where(where);
+            query = includes.Aggregate(query, (current, include) => current.Include(include));
+
+            var result = query.ToList();
 
             return result;
         }

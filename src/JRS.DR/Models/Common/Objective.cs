@@ -24,6 +24,8 @@ namespace JRS.DR.Models.Common
 
         public Location Location { get; set; }
 
+        public int ObjectiveTypeId { get; protected set; }
+
         public ObjectiveType Type { get; set; }
 
         private string _status { get; set; }

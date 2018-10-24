@@ -10,12 +10,12 @@
     }
     <ul class="pagination">
         <li>
-            <a href="@Model.FirstPageLink(Context)">
+            <a href="@Model.FirstPageLink(Context, Url)">
                 <i class="fa fa-step-backward" aria-hidden="true"></i>
             </a>
         </li>
         <li>
-            <a href="@Model.PrevPageLink(Context)">
+            <a href="@Model.PrevPageLink(Context, Url)">
                 <i class="fa fa-chevron-left" aria-hidden="true"></i>
             </a>
         </li>
@@ -23,12 +23,12 @@
             <span class="pointer-none">@Html.Raw(Model.PageInfoDisplay())</span>
         </li>
         <li>
-            <a href="@Model.NextPageLink(Context)">
+            <a href="@Model.NextPageLink(Context, Url)">
                 <i class="fa fa-chevron-right" aria-hidden="true"></i>
             </a>
         </li>
         <li>
-            <a href="@Model.LastPageLink(Context)">
+            <a href="@Model.LastPageLink(Context, Url)">
                 <i class="fa fa-step-forward" aria-hidden="true"></i>
             </a>
         </li>

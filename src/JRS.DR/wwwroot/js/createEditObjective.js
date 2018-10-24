@@ -1,6 +1,7 @@
 ﻿"use strict";
 
-(function () {
+(function() {
+    var defaultUrl = ($("#DefaultUrl").val() + "/").replace("//", "/");
 
     if ($("#createObjectiveForm").length === 0)
         return;
@@ -16,7 +17,7 @@
 
     function getLanguages() {
         $.ajax({
-            url: "/Admin/GetLanguages",
+            url: defaultUrl + "Admin/GetLanguages",
             type: "GET",
             data: {},
             dataType: "json",
@@ -45,7 +46,7 @@
         $("#ObjectiveTypeId option").remove();
         $("#ObjectiveTypeId").append('<option value="">Alegeti categoria obiectivului</option>');
         $.ajax({
-            url: "/Admin/GetObjectiveTypes",
+            url: defaultUrl + "Admin/GetObjectiveTypes",
             type: "GET",
             data: { 'languageId': languageId },
             dataType: "json",

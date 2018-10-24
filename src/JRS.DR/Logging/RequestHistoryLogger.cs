@@ -7,18 +7,20 @@ namespace JRS.DR.Logging
 {
     public class RequestHistoryLogger : IRequestHistoryLogger
     {
+        private const string LoggerName = "RequestHistoryLogger";
+
         private readonly ILogger _logger;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public RequestHistoryLogger(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
-            _logger = LogManager.GetCurrentClassLogger();
+            _logger = LogManager.GetLogger(LoggerName);
         }
 
         public void LogRequest()
         {
-            var eventLog = new LogEventInfo(LogLevel.Info, "RequestHistoryLogger", string.Empty);
+            var eventLog = new LogEventInfo(LogLevel.Info, LoggerName, string.Empty);
             eventLog.Properties["Created"] = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff");
             eventLog.Properties["Ip"] = LogProperties.GetIp(_httpContextAccessor.HttpContext);
             eventLog.Properties["Username"] = LogProperties.GetUsername(_httpContextAccessor.HttpContext);

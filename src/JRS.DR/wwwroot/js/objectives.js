@@ -1,6 +1,7 @@
 ﻿"use strict";
 
 (function() {
+    var defaultUrl = ($("#DefaultUrl").val() + "/").replace("//", "/");
 
     var objectiveId;
 
@@ -11,7 +12,7 @@
 
     function deleteObjective() {
         $.ajax({
-            url: "/admin/delete",
+            url: defaultUrl + "admin/delete",
             type: "delete",
             data: { objectiveId: objectiveId },
             success: function(res) {

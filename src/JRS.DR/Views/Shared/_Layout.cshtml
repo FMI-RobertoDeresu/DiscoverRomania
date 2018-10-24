@@ -23,6 +23,7 @@
 <body>
     <div class="jumbotron">
         <div class="container-fluid">
+            @Html.Hidden("DefaultUrl", Url.Content("~"))
             @RenderBody()
         </div>
     </div>

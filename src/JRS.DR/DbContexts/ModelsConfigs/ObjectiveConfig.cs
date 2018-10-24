@@ -9,7 +9,7 @@ namespace JRS.DR.DbContexts.ModelsConfigs
         {
             modelBuilder.Entity<Objective>().ToTable("Objective").HasKey(x => x.Id);
             modelBuilder.Entity<Objective>().Property("_status").HasColumnName("Status");
-            modelBuilder.Entity<Objective>().HasOne(x => x.Type).WithOne().HasForeignKey("Objective", "ObjectiveTypeId");
+            modelBuilder.Entity<Objective>().HasOne(x => x.Type).WithOne().HasForeignKey<Objective>(x => x.ObjectiveTypeId);
             modelBuilder.Entity<Objective>().Ignore("Status");
         }
     }

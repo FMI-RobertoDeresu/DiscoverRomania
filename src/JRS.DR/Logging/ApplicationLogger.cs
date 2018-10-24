@@ -6,11 +6,13 @@ namespace JRS.DR.Logging
 {
     public class ApplicationLogger : IApplicationLogger
     {
+        private const string LoggerName = "ApplicationLogger";
+
         private readonly ILogger _logger;
 
         public ApplicationLogger()
         {
-            _logger = LogManager.GetCurrentClassLogger();
+            _logger = LogManager.GetLogger(LoggerName);
         }
 
         public void LogError(Exception exception)
@@ -27,7 +29,7 @@ namespace JRS.DR.Logging
 
         private static LogEventInfo LogEventInfoFromException(Exception exception, LogLevel level)
         {
-            var exceptionLog = new LogEventInfo(level, "ApplicationLogger", string.Empty);
+            var exceptionLog = new LogEventInfo(level, LoggerName, string.Empty);
             exceptionLog.Properties["Created"] = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff");
             exceptionLog.Properties["Type"] = $"{level} - {exception.GetType().Name}";
             exceptionLog.Properties["Message"] = exception.Message;

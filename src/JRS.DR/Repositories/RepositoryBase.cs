@@ -72,9 +72,12 @@ namespace JRS.DR.Repositories
             return result;
         }
 
-        public virtual IEnumerable<TEntity> GetMany(Expression<Func<TEntity, bool>> where)
+        public virtual IEnumerable<TEntity> GetMany(Expression<Func<TEntity, bool>> where, params Expression<Func<TEntity, object>>[] includes)
         {
-            var result = QueryAll().Where(where).ToList();
+            var query = QueryAll().Where(where);
+            query = includes.Aggregate(query, (current, include) => current.Include(include));
+
+            var result = query.ToList();
 
             return result;
         }

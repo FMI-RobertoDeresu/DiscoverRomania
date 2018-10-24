@@ -74,9 +74,13 @@ namespace JRS.DR.Services
             new ApiServiceValidator().ValidateGetObjectives(input);
 
             var objectives = _objectiveRepository.GetMany(x =>
-                x.Language.Id == input.LanguageId.Value &&
-                input.XLeftTop.Value <= x.Location.X && input.XRightBottom.Value >= x.Location.X &&
-                input.YLeftTop <= x.Location.Y && input.YRightBottom >= x.Location.Y);
+                    x.Language.Id == input.LanguageId.Value &&
+                    input.XLeftTop.Value <= x.Location.X && input.XRightBottom.Value >= x.Location.X &&
+                    input.YLeftTop <= x.Location.Y && input.YRightBottom >= x.Location.Y,
+                x => x.Type);
+
+            foreach (var objective in objectives)
+                objective.Type = _objectiveTypeRepository.Get(objective.ObjectiveTypeId);
 
             var response = new GetObjectivesResponse
             {
